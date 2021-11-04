@@ -40,22 +40,44 @@
                                     <outlet property="dataSource" destination="rHY-al-d8T" id="nFr-Be-vJG"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIR-mG-J1d">
-                                <rect key="frame" x="297" y="662" width="67" height="234"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qk6-BZ-OD7">
+                                <rect key="frame" x="197" y="743" width="50" height="31"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Left"/>
+                                <connections>
+                                    <action selector="clickLeft:" destination="rHY-al-d8T" eventType="touchUpInside" id="Nk5-S2-lPL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A3v-7Y-IOW">
+                                <rect key="frame" x="247" y="712" width="67" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Rotate"/>
+                                <connections>
+                                    <action selector="clickRotate:" destination="rHY-al-d8T" eventType="touchUpInside" id="ckG-TS-UhL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIR-mG-J1d">
+                                <rect key="frame" x="314" y="743" width="58" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Right"/>
+                                <connections>
+                                    <action selector="clickRight:" destination="rHY-al-d8T" eventType="touchUpInside" id="bMS-4u-ayo"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xej-kr-3xJ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="XIR-mG-J1d" secondAttribute="bottom" id="4Kp-lK-kNA"/>
+                            <constraint firstItem="XIR-mG-J1d" firstAttribute="leading" secondItem="A3v-7Y-IOW" secondAttribute="trailing" id="N0H-RV-jTu"/>
                             <constraint firstItem="l2h-4F-Hc2" firstAttribute="top" secondItem="xej-kr-3xJ" secondAttribute="top" id="TA6-3z-TuZ"/>
                             <constraint firstItem="l2h-4F-Hc2" firstAttribute="leading" secondItem="xej-kr-3xJ" secondAttribute="leading" id="UNr-1D-Huf"/>
+                            <constraint firstItem="xej-kr-3xJ" firstAttribute="trailing" secondItem="A3v-7Y-IOW" secondAttribute="trailing" constant="100" id="WcN-mD-0Sc"/>
                             <constraint firstItem="xej-kr-3xJ" firstAttribute="bottom" secondItem="l2h-4F-Hc2" secondAttribute="bottom" constant="200" id="XLl-pS-LmS"/>
-                            <constraint firstItem="xej-kr-3xJ" firstAttribute="trailing" secondItem="XIR-mG-J1d" secondAttribute="trailing" constant="50" id="fpR-8A-60A"/>
-                            <constraint firstItem="XIR-mG-J1d" firstAttribute="top" secondItem="l2h-4F-Hc2" secondAttribute="bottom" id="nW4-UF-Kwg"/>
+                            <constraint firstItem="XIR-mG-J1d" firstAttribute="top" secondItem="A3v-7Y-IOW" secondAttribute="bottom" id="bed-Hf-FYE"/>
+                            <constraint firstItem="Qk6-BZ-OD7" firstAttribute="top" secondItem="A3v-7Y-IOW" secondAttribute="bottom" id="eeQ-hn-pRM"/>
+                            <constraint firstItem="A3v-7Y-IOW" firstAttribute="top" secondItem="l2h-4F-Hc2" secondAttribute="bottom" constant="50" id="gSJ-cP-f4Y"/>
                             <constraint firstItem="l2h-4F-Hc2" firstAttribute="trailing" secondItem="xej-kr-3xJ" secondAttribute="trailing" id="uyp-Lh-Ilo"/>
+                            <constraint firstItem="A3v-7Y-IOW" firstAttribute="leading" secondItem="Qk6-BZ-OD7" secondAttribute="trailing" id="x16-6O-S1X"/>
                         </constraints>
                     </view>
                     <connections>

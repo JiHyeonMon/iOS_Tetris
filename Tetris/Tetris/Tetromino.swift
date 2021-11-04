@@ -11,12 +11,32 @@ import UIKit
 
 class Tetromino {
 
-    var x: Int = 0
+    // 첫 위치가 게임판의 가운데에 위치할 수 있게 가운데 위치로 고정
+    var x: Int = Int(GameConfig().BoardCellX/2)-1
     var y: Int = 0
 
-    enum Shape{
+    enum Block: CaseIterable{
         case I, O, T, J, L, S, Z
 
+        var shape: [[Int]] {
+            switch self {
+            case .I:
+                return [[1,1,1,1]]
+            case .O:
+                return [[1,1],[1,1]]
+            case .T:
+                return [[0,1,0],[1,1,1]]
+            case .J:
+                return [[0,1], [0,1],[1,1]]
+            case .L:
+                return [[1,0], [1,0], [1,1]]
+            case .S:
+                return [[1,0], [1,1], [0,1]]
+            case .Z:
+                return [[0,1], [1,1], [1,0]]
+            }
+        }
+        
         var color : UIColor {
             switch self {
             case .I:
@@ -40,19 +60,32 @@ class Tetromino {
     
     enum Rotate {
         case clock, counterClock
-        
-//        func rotate() {
-//            switch self {
-//            case .clock:
-//                <#code#>
-//            case .counterClock:
-//                <#code#>
-//            }
-//        }
     }
 
     enum Direction {
         case down, left, right
     }
+    
+    var block = Block.allCases.randomElement() ?? .O
 
+}
+
+extension Tetromino {
+    
+    func move(direction: Direction) {
+        switch direction {
+        case .down: if y < GameConfig().BoardCellY-block.shape.count { y += 1 }
+        case .left: if x > 0 { x -= 1 }
+        case .right: x+=1
+        }
+    }
+    
+    func rotate(direction: Rotate) {
+        switch direction {
+        case .clock:
+            return
+        case .counterClock:
+            return
+        }
+    }
 }
