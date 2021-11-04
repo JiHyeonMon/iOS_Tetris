@@ -43,7 +43,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         if gameBoard[indexPath[0]][indexPath[1]] == 1 {
             cell.backgroundColor = UIColor.red
         } else {
-            cell.backgroundColor = UIColor.gray
+            cell.backgroundColor = UIColor.lightGray
         }
         return cell
     }

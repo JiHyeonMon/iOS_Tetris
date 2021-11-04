@@ -8,68 +8,51 @@
 import Foundation
 import UIKit
 
-//
-//class Tetromino {
-//    
-//    var x: Int = 0
-//    var y: Int = 0
-//    
-//    enum Shape{
-//        case I, O, T, J, L, S, Z
-//        
-//        static let color: UIColor = {
-//            switch self {
-//            case .I:
-//                return UIColor.red
-//            case .O:
-//                <#code#>
-//            case .T:
-//                <#code#>
-//            case .J:
-//                <#code#>
-//            case .L:
-//                <#code#>
-//            case .S:
-//                <#code#>
-//            case .Z:
-//                <#code#>
-//            }
-//        }
-//        
+
+class Tetromino {
+
+    var x: Int = 0
+    var y: Int = 0
+
+    enum Shape{
+        case I, O, T, J, L, S, Z
+
+        var color : UIColor {
+            switch self {
+            case .I:
+                return UIColor.cyan
+            case .O:
+                return UIColor.yellow
+            case .T:
+                return UIColor.purple
+            case .J:
+                return UIColor.blue
+            case .L:
+                return UIColor.orange
+            case .S:
+                return UIColor.green
+            case .Z:
+                return UIColor.red
+            }
+        }
+
+    }
+    
+    enum Rotate {
+        case clock, counterClock
+        
 //        func rotate() {
 //            switch self {
-//            case .I:
+//            case .clock:
 //                <#code#>
-//            case .O:
-//                <#code#>
-//            case .T:
-//                <#code#>
-//            case .J:
-//                <#code#>
-//            case .L:
-//                <#code#>
-//            case .S:
-//                <#code#>
-//            case .Z:
+//            case .counterClock:
 //                <#code#>
 //            }
 //        }
-//        
-//    }
-//    
-//    enum Direction {
-//        case down, left, right
-//        
-//        func move() {
-//            switch self {
-//            case .down:
-//                Self.y += 1
-//            case .left:
-//                self.x -= 1
-//            case .right:
-//                self.x += 1
-//            }
-//        }
-//    }
-//    
-//}
+    }
+
+    enum Direction {
+        case down, left, right
+    }
+
+}
