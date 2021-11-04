@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+class GameConfig{
+    
+    let BoardCellX = 10
+    let BoardCellY = 12
+    
+    
+}
