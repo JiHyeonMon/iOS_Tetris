@@ -74,19 +74,22 @@ class Game {
     func rotate(direction: Rotate) {
         switch direction {
         case .clock:
-//            board.block.block.rotate()
-            return
+            board.removeBlock()
+            board.block.roatate()
+            board.reDrawBoard()
+            reDrawBoardAction?()
+            
         case .counterClock:
             return
         }
     }
     
     func isValid() -> Bool {
-        
-        for y in board.blockShape.shape.indices {
-            for x in board.blockShape.shape[y].indices {
+    
+        for y in board.shape.indices {
+            for x in board.shape[y].indices {
                 
-                if board.blockShape.shape[y][x] != 0 {
+                if board.shape[y][x] != 0 {
                     
                     if board.block.y + y > GameConfig().BoardCellY - 1 || board.block.x + x > GameConfig().BoardCellX - 1 || board.block.x < 0 {
                         return false

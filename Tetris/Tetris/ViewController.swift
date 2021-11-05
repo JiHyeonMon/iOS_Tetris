@@ -63,7 +63,7 @@ class ViewController: UIViewController {
     
 
     @IBAction func clickRotate(_ sender: UIButton) {
-
+        game.rotate(direction: Rotate.clock)
     }
     
     @IBAction func clickRight(_ sender: UIButton) {

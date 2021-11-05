@@ -57,7 +57,8 @@ class Tetromino {
     var x: Int = Int(GameConfig().BoardCellX/2)-1
     var y: Int = 0
 
-    var block = Block.allCases.randomElement() ?? .O
+//    var block = Block.allCases.randomElement() ?? .O
+    var shape: [[Int]] = Block.allCases.randomElement()?.shape ?? Block.O.shape
 
 }
 
@@ -72,9 +73,16 @@ extension Tetromino {
         }
     }
     
-//    func roatate() {
-//        block.shape = block.rotate()
-//    }
+    func roatate() {
+        var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
+        
+        for i in shape.indices {
+            for j in shape[i].indices {
+                rotateTetromino[i][j] = shape[shape.endIndex-1-j][i]
+            }
+        }
+        shape = rotateTetromino
+    }
 }
 
 /*
