@@ -30,17 +30,6 @@ enum Block: CaseIterable{
             return [[0,7,0], [7,7,0], [7,0,0]]
         }
     }
-    
-    func rotate() -> [[Int]] {
-        var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
-        for i in shape.indices {
-            for j in shape[i].indices {
-                rotateTetromino[i][j] = shape[shape.endIndex-1-j][i]
-            }
-        }
-        return rotateTetromino
-    }
-
 }
 
 enum Rotate {
@@ -48,7 +37,7 @@ enum Rotate {
 }
 
 enum Direction {
-    case up, down, left, right
+    case up, autoDown, hardDown, left, right
 }
 
 
@@ -68,7 +57,7 @@ extension Tetromino {
     func move(direction: Direction) {
         switch direction {
         case .up: y -= 1
-        case .down: y += 1 
+        case .autoDown, .hardDown: y += 1
         case .left: x -= 1
         case .right: x += 1 
         }

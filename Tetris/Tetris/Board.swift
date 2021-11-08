@@ -34,10 +34,8 @@ class Board {
                 if block.shape[y][x] > 0 {
                     gameBoard[block.y+y][block.x+x] = block.shape[y][x]
                 }
-                
             }
         }
-                
     }
     
     func removeBlock() {
