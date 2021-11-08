@@ -21,13 +21,9 @@ class ViewController: UIViewController {
     // 반복을 위한 RunLoop 생성
     let runLoop = RunLoop.current
     var timer: Timer!
-    
-    var gameSpeed: Double = 1
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
         
         // delegate와 datasource에서 제공하는 메서드를 이용해서 collectionView를 그림
         // 해당 메서드 구현하기 위해 프로토콜 참조하고
@@ -38,9 +34,7 @@ class ViewController: UIViewController {
         nextBlockCollectionView.delegate = self
         nextBlockCollectionView.dataSource = self
         
-        // init 작업
-        // 여기서 초기 화면 그리고 클로저도 전달받아 리프레쉬
-//        game = Game(reDrawBoardAction: {self.gameBoardCollectionView.reloadData()}, reDrawNextBlockAction: {self.nextBlockCollectionView.reloadData()})
+        // init 작업 - 실제 게임 데이터를 가진 Game 객체 생성
         game = Game()
 
     }
@@ -48,15 +42,21 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // 실행
-        progress()
+        // 게임 실행
+        game.gameStart() // game내의 테트리스 게임에 필요한 데이터 생성 및 설정
+        self.gameBoardCollectionView.reloadData()
+        self.nextBlockCollectionView.reloadData()
+        progress() // Controller에서 game 객체 값을 확인하고 View 업데이트
     }
 
     // 게임 실행
+    // game 객체 값을 확인하고 View 업데이트
     func progress() {
         
-        timer = Timer.scheduledTimer(withTimeInterval: gameSpeed, repeats: true) { _ in
+        // 1초마다 아래 타이머 실행 (반복 설정)
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             
+            // check
             if self.game.gameState == .gameover {
                 self.timer.invalidate()
             }
@@ -72,6 +72,8 @@ class ViewController: UIViewController {
             
             
             // UI Update
+            self.levelLabel.text = String(self.game.level)
+            self.scoreLabel.text = String(self.game.score)
             self.gameBoardCollectionView.reloadData()
             self.nextBlockCollectionView.reloadData()
             

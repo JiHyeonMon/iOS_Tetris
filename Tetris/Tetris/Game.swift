@@ -10,34 +10,40 @@ import UIKit
 
 class Game {
     
-    enum State {
-        case progress, gameover
-    }
+    // 게임 상태를 나타낼 enum
+    enum GameState { case progress, gameover }
+    var gameState: GameState!
     
-    var gameState: State
-    // move 클릭 들어오면
-    // isvalid
-    // actual move
-    // redraw
-    
-    var board = Board()
+    // Game에 필요한 객체 선언
+    var board : Board!
     var currentBlock : Tetromino!
     var nextBlock : Tetromino!
     
+    // Game Level을 표시해줄 변수
     var level: Int
+    // Game Score를 표시해줄 변수
     var score: Int
     
-    // closure 받기
-    // 맨 처음 화면 그리기!!
+    // Game에서 필요한 객체 및 변수 초기화 작업
     init() {
+        // 초기 레벨 1, 점수 0으로 설정
         level = 1
         score = 0
-        gameState = .progress
         
+        // Game에 필요한 board, currentBlock, nextBlock 객체 생성
+        board = Board()
         currentBlock = Tetromino()
         nextBlock = Tetromino()
-        
+    }
+    
+    func gameStart() {
+        // 게임 실행중인 상태 .progress로 설정
+        gameState = .progress
+
+        // board에 currentBlock을 넣는다.
         board.addBlock(block: currentBlock)
+        
+        // 넣은 block을 실제 board의 게임판에 그리는 작업
         board.reDrawBoard()
     
     }
@@ -52,10 +58,16 @@ class Game {
         nextBlock = Tetromino()
     }
     
+    // Controller로부터 move 요청이 왔을 때, 실제 block 움직일 코드
+    // enum으로 정의해둔 Direction 타입을 인자로 받는다. --> up, autoDown, hardDown, left, right
     func move(direction: Direction) {
-        switch direction {
+        
+        switch direction { // 각각의 direction마다 switch 문으로 실행
         case .up: return
+        
+        // Game이 진행되며 Timer에 맞춰 자동으로 autoDown으로 블럭이 한 칸씩 내려온다.
         case .autoDown:
+            
             board.removeBlock()
             board.block.move(direction: .autoDown)
             
@@ -71,6 +83,8 @@ class Game {
             
             board.reDrawBoard()
             
+        // 사용자가 Down키를 눌렀을 때, hardDown이 실행되며 내려갈 수 있는 최대한의 칸까지 내려간다.
+        // 곧장 해당 블럭 끝나고 newBlock 생성
         case .hardDown:
             while true {
                 board.removeBlock()
@@ -86,9 +100,9 @@ class Game {
             addNewBlock()
 
             
+        // 사용자가 Left키를 눌렀을 때, 블럭을 왼쪽으로 한 칸 이동시킨다.
         case .left:
             board.removeBlock()
-            
             board.block.move(direction: .left)
             
             if !isValid() {
@@ -96,6 +110,7 @@ class Game {
             }
             board.reDrawBoard()
             
+        // 사용자가 Right키를 눌렀을 때, 블럭을 오른쪽으로 한 칸 이동시킨다.
         case .right:
             board.removeBlock()
             board.block.move(direction: .right)
@@ -103,11 +118,13 @@ class Game {
             if !isValid() {
                 board.block.move(direction: .left)
             }
+            
             board.reDrawBoard()
         }
         
     }
     
+    // 사용자가 rotate키를 눌렀을 때, 블럭을 시계방향으로 회전 시킨다.
     func rotate() {
         board.removeBlock()
         
@@ -145,7 +162,7 @@ class Game {
         return true
     }
     
-    func checkClear() -> Int {
+    private func checkClear() -> Int {
         var clearLine = 0
         
         for y in 0..<GameConfig().BoardCellY {
@@ -170,7 +187,7 @@ class Game {
         return clearLine
     }
     
-    func checkScore() {
+    private func checkScore() {
         score += GameConfig().BlockScore
         score += checkClear()*GameConfig().LineScore
         
@@ -187,5 +204,19 @@ class Game {
             level = 5
         }
         
+    }
+    
+    
+    // currentBlock 배치 끝나고 새로운 테트로미노 생성 후 넣어주기
+    private func addNewBlock() -> Bool{
+        
+        board.addBlock(block: nextBlock)
+        if !isValid() {
+            gameState = .gameover
+            return false
+        }
+        
+        nextBlock = Tetromino()
+        return true
     }
 }
