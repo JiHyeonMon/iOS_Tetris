@@ -205,18 +205,4 @@ class Game {
         }
         
     }
-    
-    
-    // currentBlock 배치 끝나고 새로운 테트로미노 생성 후 넣어주기
-    private func addNewBlock() -> Bool{
-        
-        board.addBlock(block: nextBlock)
-        if !isValid() {
-            gameState = .gameover
-            return false
-        }
-        
-        nextBlock = Tetromino()
-        return true
-    }
 }
