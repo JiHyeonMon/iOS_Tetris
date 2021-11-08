@@ -47,7 +47,6 @@ class Tetromino {
     var x: Int = Int(GameConfig().BoardCellX/2)-1
     var y: Int = 0
 
-//    var block = Block.allCases.randomElement() ?? .O
     var shape: [[Int]] = Block.allCases.randomElement()?.shape ?? Block.O.shape
 
 }
@@ -77,7 +76,6 @@ extension Tetromino {
             
         case .counterClock:
             var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
-            
             
             for i in shape.indices {
                 for j in shape[i].indices {

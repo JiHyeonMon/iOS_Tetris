@@ -9,19 +9,25 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    /*************************************
+     Data
+     */
+    
+    // View Reference
     @IBOutlet weak var gameBoardCollectionView: UICollectionView!
     @IBOutlet weak var nextBlockCollectionView: UICollectionView!
-    
     @IBOutlet weak var levelLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     
     // 실제 게임 진행할 게임 객체 생성
     var game : Game!
     
-    // 반복을 위한 RunLoop 생성
+    // 반복을 위한 RunLoop, Timer 객체 선언
     let runLoop = RunLoop.current
     var timer: Timer!
         
+    
+    // LifeCycle Start - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,8 +50,8 @@ class ViewController: UIViewController {
         
         // 게임 실행
         game.gameStart() // game내의 테트리스 게임에 필요한 데이터 생성 및 설정
-        self.gameBoardCollectionView.reloadData()
-        self.nextBlockCollectionView.reloadData()
+        updateUI()
+
         progress() // Controller에서 game 객체 값을 확인하고 View 업데이트
     }
 
@@ -72,16 +78,20 @@ class ViewController: UIViewController {
             
             
             // UI Update
-            self.levelLabel.text = String(self.game.level)
-            self.scoreLabel.text = String(self.game.score)
-            self.gameBoardCollectionView.reloadData()
-            self.nextBlockCollectionView.reloadData()
+            self.updateUI()
             
             
         }
         
         runLoop.add(timer, forMode: .common)
         
+    }
+    
+    func updateUI() {
+        self.levelLabel.text = String(self.game.level)
+        self.scoreLabel.text = String(self.game.score)
+        self.gameBoardCollectionView.reloadData()
+        self.nextBlockCollectionView.reloadData()
     }
     
     /*
