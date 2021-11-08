@@ -10,14 +10,16 @@ import UIKit
 
 class GameConfig{
     
+    // 테트리스 판의 가로 세로 블럭 개수
     let BoardCellX = 10
     let BoardCellY = 12
     
+    // 테트로미노에 맞는 색상 보여주기 위해 UIColor 타입 리스트 선언
     let BlockColor:[UIColor] = [UIColor.lightGray, UIColor.cyan, UIColor.yellow, UIColor.purple, UIColor.blue, UIColor.orange, UIColor.green, UIColor.red]
     
-    // seconds
-    let GameCounter = [1000, 1, 0.8, 0.75, 0.5, 0.4]
-    
+    // 점수 계산
+    // 블럭 하나 놓을 때마다 10점 점수 
     let BlockScore = 10
+    // 게임판의 한 줄을 다 없앴을 경우, 한 줄 점수
     let LineScore = 100
 }

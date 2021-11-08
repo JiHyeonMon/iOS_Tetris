@@ -46,7 +46,6 @@ class Game {
         board.addBlock(block: nextBlock)
         
         if !isValid() {
-            print("add New Block is not valid")
             self.gameState = .gameover
             return
         }
@@ -56,9 +55,9 @@ class Game {
     func move(direction: Direction) {
         switch direction {
         case .up: return
-        case .down:
+        case .autoDown:
             board.removeBlock()
-            board.block.move(direction: .down)
+            board.block.move(direction: .autoDown)
             
             // validCheck
             if !isValid() {
@@ -71,6 +70,21 @@ class Game {
             }
             
             board.reDrawBoard()
+            
+        case .hardDown:
+            while true {
+                board.removeBlock()
+                board.block.move(direction: .autoDown)
+
+                if !isValid(){
+                    break
+                }
+            }
+            board.block.move(direction: .up)
+            board.reDrawBoard()
+            checkScore() // 여기서 checkClear
+            addNewBlock()
+
             
         case .left:
             board.removeBlock()
@@ -94,22 +108,17 @@ class Game {
         
     }
     
-    func rotate(direction: Rotate) {
-        switch direction {
-        case .clock:
-            board.removeBlock()
-            
-            board.block.roatate(direction: .clock)
-            
-            if !isValid() {
-                board.block.roatate(direction: .counterClock)
-            }
-            
-            board.reDrawBoard()
-            
-        case .counterClock:return
-            
+    func rotate() {
+        board.removeBlock()
+        
+        board.block.roatate(direction: .clock)
+        
+        if !isValid() {
+            board.block.roatate(direction: .counterClock)
         }
+        
+        board.reDrawBoard()
+        
     }
     
     func isValid() -> Bool {

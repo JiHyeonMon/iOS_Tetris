@@ -65,11 +65,10 @@ class ViewController: UIViewController {
             // check
             self.levelLabel.text = String(self.game.level)
             self.scoreLabel.text = String(self.game.score)
-            self.gameSpeed = GameConfig().GameCounter[self.game.level]
             
             
             // Action
-            self.game.move(direction: Direction.down)
+            self.game.move(direction: Direction.autoDown)
             
             
             // UI Update
@@ -79,32 +78,35 @@ class ViewController: UIViewController {
             
         }
         
-//        runLoop.run(until: Date().addingTimeInterval(0.1))
         runLoop.add(timer, forMode: .common)
         
     }
-
+    
+    /*
+     View에서의 사용자 Event
+     */
     @IBAction func clickRotate(_ sender: UIButton) {
-        game.rotate(direction: Rotate.clock)
-        self.gameBoardCollectionView.reloadData()
+        game.rotate()                                   // Block Rotate를 위한 game 객체 rotate 메서드 호출
+        self.gameBoardCollectionView.reloadData()       // UI Update
     }
     
     @IBAction func clickRight(_ sender: UIButton) {
-        game.move(direction: Direction.right)
-        self.gameBoardCollectionView.reloadData()
+        game.move(direction: Direction.right)           //
+        self.gameBoardCollectionView.reloadData()       // UI Update
     }
     
     @IBAction func clickLeft(_ sender: UIButton) {
-        game.move(direction: Direction.left)
-        self.gameBoardCollectionView.reloadData()
+        game.move(direction: Direction.left)            //
+        self.gameBoardCollectionView.reloadData()       // UI Update
     }
 
     @IBAction func clickHardDown(_ sender: UIButton) {
-        game.move(direction: Direction.down)
-        self.gameBoardCollectionView.reloadData()
+        game.move(direction: Direction.hardDown)        //
+        self.gameBoardCollectionView.reloadData()       // UI Update
     }
 }
 
+// Storyboard상 collectionView를 그리기 위해 정의
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
