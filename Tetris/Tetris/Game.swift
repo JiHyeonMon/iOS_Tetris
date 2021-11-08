@@ -10,23 +10,47 @@ import UIKit
 
 class Game {
     
-    var board = Board()
+    enum State {
+        case progress, gameover
+    }
     
-    // view controller에 있는 collectionView 액션 위한 클로저
-    typealias ReDrawBoardAction = () -> Void
-    var reDrawBoardAction: ReDrawBoardAction?
-    
+    var gameState: State
     // move 클릭 들어오면
     // isvalid
     // actual move
     // redraw
     
+    var board = Board()
+    var currentBlock : Tetromino!
+    var nextBlock : Tetromino!
+    
+    var level: Int
+    var score: Int
+    
     // closure 받기
     // 맨 처음 화면 그리기!!
-    init(reDrawBoardAction: @escaping ReDrawBoardAction) {
-        self.reDrawBoardAction = reDrawBoardAction
+    init() {
+        level = 1
+        score = 0
+        gameState = .progress
+        
+        currentBlock = Tetromino()
+        nextBlock = Tetromino()
+        
+        board.addBlock(block: currentBlock)
         board.reDrawBoard()
-        reDrawBoardAction()
+    
+    }
+    
+    func addNewBlock() {
+        board.addBlock(block: nextBlock)
+        
+        if !isValid() {
+            print("add New Block is not valid")
+            self.gameState = .gameover
+            return
+        }
+        nextBlock = Tetromino()
     }
     
     func move(direction: Direction) {
@@ -35,17 +59,18 @@ class Game {
         case .down:
             board.removeBlock()
             board.block.move(direction: .down)
-
+            
             // validCheck
             if !isValid() {
                 // new block
+                // check score, check line
                 board.block.move(direction: .up)
                 board.reDrawBoard()
-                board.addBlock(block: Tetromino())
+                checkScore() // 여기서 checkClear
+                addNewBlock()
             }
             
             board.reDrawBoard()
-            reDrawBoardAction?()
             
         case .left:
             board.removeBlock()
@@ -56,7 +81,6 @@ class Game {
                 board.block.move(direction: .right)
             }
             board.reDrawBoard()
-            reDrawBoardAction?()
             
         case .right:
             board.removeBlock()
@@ -66,7 +90,6 @@ class Game {
                 board.block.move(direction: .left)
             }
             board.reDrawBoard()
-            reDrawBoardAction?()
         }
         
     }
@@ -75,23 +98,28 @@ class Game {
         switch direction {
         case .clock:
             board.removeBlock()
-            board.block.roatate()
-            board.reDrawBoard()
-            reDrawBoardAction?()
             
-        case .counterClock:
-            return
+            board.block.roatate(direction: .clock)
+            
+            if !isValid() {
+                board.block.roatate(direction: .counterClock)
+            }
+            
+            board.reDrawBoard()
+            
+        case .counterClock:return
+            
         }
     }
     
     func isValid() -> Bool {
-    
-        for y in board.shape.indices {
-            for x in board.shape[y].indices {
+        
+        for y in board.block.shape.indices {
+            for x in board.block.shape[y].indices {
                 
-                if board.shape[y][x] != 0 {
+                if board.block.shape[y][x] != 0 {
                     
-                    if board.block.y + y > GameConfig().BoardCellY - 1 || board.block.x + x > GameConfig().BoardCellX - 1 || board.block.x < 0 {
+                    if board.block.y + y > GameConfig().BoardCellY - 1 || board.block.x + x > GameConfig().BoardCellX - 1 || board.block.x + x < 0 {
                         return false
                     }
                     
@@ -99,9 +127,6 @@ class Game {
                     if board.gameBoard[board.block.y + y][board.block.x + x] != 0 {
                         return false
                     }
-                    
-                    //if y < GameConfig().BoardCellY - block.shape.endIndex { y += 1 }
-                    //if x < GameConfig().BoardCellX - block.shape[0].endIndex { x += 1 }
                 }
             }
         }
@@ -127,7 +152,7 @@ class Game {
             }
             
             if isOccupied {
-                clearLine+=1
+                clearLine += 1
                 board.gameBoard.remove(at: y)
                 board.gameBoard.insert(Array(repeating: 0, count: GameConfig().BoardCellX), at: 0)
             }
@@ -136,5 +161,22 @@ class Game {
         return clearLine
     }
     
-    
+    func checkScore() {
+        score += GameConfig().BlockScore
+        score += checkClear()*GameConfig().LineScore
+        
+        switch score {
+        case 0..<200:
+            level = 1
+        case 100..<400:
+            level = 2
+        case 400..<750:
+            level = 3
+        case 750..<1000:
+            level = 4
+        default:
+            level = 5
+        }
+        
+    }
 }

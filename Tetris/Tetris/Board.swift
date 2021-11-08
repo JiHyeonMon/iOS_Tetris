@@ -14,19 +14,15 @@ class Board {
     
     var gameBoard: [[Int]]
     var block : Tetromino!
-    var shape: [[Int]]
     
     init() {
         // GameConfig에 정의한 보드 사이즈 만큼의 보드 이중 배열을 0으로 초기화
         gameBoard = Array(repeating: Array(repeating: 0, count: self.width), count: self.height)
-        block = Tetromino()
-        shape = block.shape
     }
     
     // 게임판에 새로운 블럭 넣어주기
     func addBlock(block: Tetromino) {
         self.block = block
-        shape = block.shape
     }
     
     // 블럭 움직인 것에 대한 게임판 다시 그리기
@@ -53,10 +49,5 @@ class Board {
                 }
             }
         }
-    }
-    
-    // 블럭 움직임 유효한지 검사
-    func isValid() -> Bool {
-        return true
     }
 }

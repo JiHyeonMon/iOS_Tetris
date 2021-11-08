@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum Block: CaseIterable{
     
@@ -30,7 +31,7 @@ enum Block: CaseIterable{
         }
     }
     
-    mutating func rotate() -> [[Int]] {
+    func rotate() -> [[Int]] {
         var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
         for i in shape.indices {
             for j in shape[i].indices {
@@ -73,34 +74,29 @@ extension Tetromino {
         }
     }
     
-    func roatate() {
-        var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
-        
-        for i in shape.indices {
-            for j in shape[i].indices {
-                rotateTetromino[i][j] = shape[shape.endIndex-1-j][i]
+    func roatate(direction: Rotate) {
+        switch direction {
+        case .clock:
+            var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
+            
+            for i in shape.indices {
+                for j in shape[i].indices {
+                    rotateTetromino[i][j] = shape[shape.endIndex-1-j][i]
+                }
             }
+            self.shape = rotateTetromino
+            
+        case .counterClock:
+            var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
+            
+            
+            for i in shape.indices {
+                for j in shape[i].indices {
+                    rotateTetromino[shape.endIndex-1-j][i] = shape[i][j]
+                }
+            }
+            self.shape = rotateTetromino
         }
-        shape = rotateTetromino
+
     }
 }
-
-/*
- fun rotate() {
-     // 회전한 테트로미노를 넣을 배열 새로 만든다.
-     val rotateTetromino = Array(shape.size) { Array(shape.size) { 0 } }
-
-     // 시계방향으로 새로운 배열에 기존 값 넣는다.
-     // 012     630
-     // 345  -> 741
-     // 678     852
-     for (i in shape.indices) {
-         for (j in shape[i].indices) {
-             rotateTetromino[i][j] = shape[shape.size - 1 - j][i]
-         }
-     }
-
-     // 회전한 테트로미노를 기존 모양에 넣어준다.
-     shape = rotateTetromino
- }
- */
