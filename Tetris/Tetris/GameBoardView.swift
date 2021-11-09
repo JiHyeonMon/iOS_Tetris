@@ -14,23 +14,29 @@ import UIKit
  */
 class GameBoardView: UIView {
     
+    var block: UIImageView!
+    var tile: [[UIImageView]]!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         self.initLayout()
+        
+
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.initLayout()
+        
     }
     
     private func initLayout() {
     
-        let block: UIImageView = UIImageView()
-        var tile: [[UIImageView]] = Array(repeating: Array(repeating: block, count: GameConfig().BoardSizeX), count: GameConfig().BoardSizeY)
+        self.backgroundColor = .white
 
+        self.block = UIImageView()
+        self.tile = Array(repeating: Array(repeating: block, count: GameConfig().BoardSizeX), count: GameConfig().BoardSizeY)
+        
         for i in 0..<12 {
             for j in 0..<10 {
                 
@@ -42,19 +48,22 @@ class GameBoardView: UIView {
                 }()
                 
                 tile[i][j] = imageView
-            }
-        }
-        self.backgroundColor = .blue
-        
-        for i in 0..<12 {
-            for j in 0..<10 {
                 self.addSubview(tile[i][j])
 
             }
         }
-        
-        tile[3][7].backgroundColor = UIColor.cyan
-        
+    }
+    
+    func drawGameBoard(gameBoard: [[Int]]) {
+        for i in gameBoard.indices {
+            for j in gameBoard[i].indices {
+                if gameBoard[i][j] == 0 {
+                    tile[i][j].backgroundColor = UIColor.lightGray
+                } else {
+                    tile[i][j].backgroundColor = GameConfig().BlockColor[gameBoard[i][j]]
+                }
+            }
+        }
     }
     
 }
