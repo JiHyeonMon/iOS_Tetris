@@ -24,4 +24,6 @@ class GameConfig{
     let BlockScore = 10
     // 게임판의 한 줄을 다 없앴을 경우, 한 줄 점수
     let LineScore = 100
+    
+    // 점수도 여기서 
 }

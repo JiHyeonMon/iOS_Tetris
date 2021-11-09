@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     /*************************************
-     Data
+     Data Initialization
      */
     
     // View Reference
@@ -31,9 +31,17 @@ class ViewController: UIViewController {
     var timer: Timer!
         
     
-    // LifeCycle Start - Initialization
+    /*************************************
+       Life Cycle Management.
+     */
+    // LifeCycle Start - Initialization.
+    // Actual entry point.
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let gameboardView = GameBoardView(frame: CGRect(x: 0, y: 300, width: UIScreen.main.bounds.width, height: 500))
+        
+        view.addSubview(gameboardView)
         
         // delegate와 datasource에서 제공하는 메서드를 이용해서 collectionView를 그림
         // 해당 메서드 구현하기 위해 프로토콜 참조하고
@@ -47,68 +55,80 @@ class ViewController: UIViewController {
         // init 작업 - 실제 게임 데이터를 가진 Game 객체 생성
         game = Game()
         
-        // 게임 실행
-        game.gameStart() // game내의 테트리스 게임에 필요한 데이터 생성 및 설정
+        // 게임 초기화.
+        game.gameStart()
         updateUI()
         
-        progress() // Controller에서 game 객체 값을 확인하고 View 업데이트
+        // 게임 진행을 시작한다.
+        startGameTimer()
 
     }
 
-    // 게임 실행
-    // game 객체 값을 확인하고 View 업데이트
-    func progress() {
-        
+    
+    /*************************************
+       Event Handlers.
+     */
+    @IBAction func clickRotate(_ sender: UIButton) {
+        game.rotate()                                   // Block Rotate를 위한 game 객체 rotate 메서드 호출
+        updateGameboard()
+    }
+    
+    @IBAction func clickRight(_ sender: UIButton) {
+        game.checkMove(direction: MoveDirection.right)
+        updateGameboard()
+    }
+    
+    @IBAction func clickLeft(_ sender: UIButton) {
+        game.checkMove(direction: MoveDirection.left)
+        updateGameboard()
+    }
+
+    @IBAction func clickHardDown(_ sender: UIButton) {
+        game.checkMove(direction: MoveDirection.hardDown)
+        updateGameboard()
+    }
+
+
+    /*************************************
+      Game flow methods.
+     */
+    
+    private func startGameTimer() {
         // 1초마다 아래 타이머 실행 (반복 설정)
         timer = Timer.scheduledTimer(withTimeInterval: GameConfig().GameTimer, repeats: true) { _ in
-            
-            // Action
-            self.game.checkMove(direction: MoveDirection.autoDown)
-            
-            
-            // UI Update
-            self.updateUI()
-            
-            // check
-            if self.game.gameState == .gameover {
-                self.timer.invalidate()
-            }
-
+            self.progress()
         }
         
         runLoop.add(timer, forMode: .common)
-        
     }
     
-    // Game Model에서 값 가져와 View 업데이트 
-    func updateUI() {
+    // 게임 실행
+    // game 객체 값을 확인하고 View 업데이트
+    private func progress() {
+        // Action
+        self.game.checkMove(direction: MoveDirection.autoDown)
+        
+        
+        // UI Update
+        self.updateUI()
+        
+        // check
+        if self.game.gameState == .gameover {
+            self.timer.invalidate()
+        }
+    }
+    
+    // Game Model에서 값 가져와 View 업데이트
+    private func updateUI() {
         self.levelLabel.text = String(self.game.level)
         self.scoreLabel.text = String(self.game.score)
         self.gameBoardCollectionView.reloadData()
         self.nextBlockCollectionView.reloadData()
     }
     
-    /*
-     View에서의 사용자 Event
-     */
-    @IBAction func clickRotate(_ sender: UIButton) {
-        game.rotate()                                   // Block Rotate를 위한 game 객체 rotate 메서드 호출
-        self.gameBoardCollectionView.reloadData()       // UI Update
-    }
-    
-    @IBAction func clickRight(_ sender: UIButton) {
-        game.checkMove(direction: MoveDirection.right)           //
-        self.gameBoardCollectionView.reloadData()       // UI Update
-    }
-    
-    @IBAction func clickLeft(_ sender: UIButton) {
-        game.checkMove(direction: MoveDirection.left)            //
-        self.gameBoardCollectionView.reloadData()       // UI Update
-    }
-
-    @IBAction func clickHardDown(_ sender: UIButton) {
-        game.checkMove(direction: MoveDirection.hardDown)        //
-        self.gameBoardCollectionView.reloadData()       // UI Update
+    // GameBoard만 업데이트
+    private func updateGameboard() {
+        self.gameBoardCollectionView.reloadData()
     }
 }
 

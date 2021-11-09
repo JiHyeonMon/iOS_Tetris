@@ -13,8 +13,8 @@ class Game {
     
     // Game에 필요한 객체 선언
     var board : Board!
-    var currentBlock : Block!
-    var nextBlock : Block!
+    var currentBlock : TetrominoObj!
+    var nextBlock : TetrominoObj!
     
     // Game Level을 표시해줄 변수
     var level: Int
@@ -29,8 +29,8 @@ class Game {
         
         // Game에 필요한 board, currentBlock, nextBlock 객체 생성
         board = Board()
-        currentBlock = Block()
-        nextBlock = Block()
+        currentBlock = TetrominoObj()
+        nextBlock = TetrominoObj()
     }
     
     /************************
@@ -207,6 +207,8 @@ class Game {
         score += GameConfig().BlockScore            // 블럭 하나 다 놓았을 때의 블럭 당 점수
         score += lineNum * GameConfig().LineScore   // 블럭 하나 다 놓았을 때 지울 수 있는 라인 당 점수
         
+        
+        // 점수 마련해라~~~~~~~~~~~~~~~ GameConfig로
         switch score {
         case 0..<200:
             level = 1
@@ -234,6 +236,6 @@ class Game {
         
         // valid 하다면 게임판에 새 블럭 그려주고 그 다음의 새 블럭 생성
         board.insertCurrentBlock()
-        nextBlock = Block()
+        nextBlock = TetrominoObj()
     }
 }

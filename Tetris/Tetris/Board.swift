@@ -17,7 +17,7 @@ class Board {
     // 이중 배열의 게임판 선언
     var gameBoard: [[Int]]
     // 움직일 수 있는 블럭 하나를 가진다.
-    var block : Block!
+    var block : TetrominoObj!
     
     // Block 생성시 게임보드 초기화
     init() {
@@ -26,7 +26,7 @@ class Board {
     }
     
     // 게임판에 새로운 블럭 넣어주기
-    func addBlock(block: Block) {
+    func addBlock(block: TetrominoObj) {
         self.block = block
     }
     
