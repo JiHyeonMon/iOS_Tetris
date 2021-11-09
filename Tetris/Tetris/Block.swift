@@ -11,7 +11,7 @@ import UIKit
 enum Tetromino: CaseIterable{
     
     case I, O, T, J, L, S, Z
-
+    
     var shape: [[Int]] {
         switch self {
         case .I:
@@ -37,11 +37,10 @@ enum RotateDirection { case clock, counterClock }
 // 블럭이 움직일 수 있는 방향 값
 enum MoveDirection { case up, autoDown, hardDown, left, right }
 
-
 class Block {
 
     // 첫 위치가 게임판의 가운데에 위치할 수 있게 가운데 위치로 고정
-    var x: Int = Int(GameConfig().BoardCellX/2)-1
+    var x: Int = Int(GameConfig().BoardSizeX/2)-1
     var y: Int = 0
 
     // Block 생성시 랜덤한 모양의 테트로미노 shape을 가진다.

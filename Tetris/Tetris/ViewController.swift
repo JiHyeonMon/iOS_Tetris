@@ -60,18 +60,20 @@ class ViewController: UIViewController {
     func progress() {
         
         // 1초마다 아래 타이머 실행 (반복 설정)
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: GameConfig().GameTimer, repeats: true) { _ in
             
             // Action
-            self.game.move(direction: Direction.autoDown)
+            self.game.checkMove(direction: MoveDirection.autoDown)
+            
+            
+            // UI Update
+            self.updateUI()
             
             // check
             if self.game.gameState == .gameover {
                 self.timer.invalidate()
             }
-            
-            // UI Update
-            self.updateUI()
+
         }
         
         runLoop.add(timer, forMode: .common)
@@ -95,17 +97,17 @@ class ViewController: UIViewController {
     }
     
     @IBAction func clickRight(_ sender: UIButton) {
-        game.move(direction: MoveDirection.right)           //
+        game.checkMove(direction: MoveDirection.right)           //
         self.gameBoardCollectionView.reloadData()       // UI Update
     }
     
     @IBAction func clickLeft(_ sender: UIButton) {
-        game.move(direction: MoveDirection.left)            //
+        game.checkMove(direction: MoveDirection.left)            //
         self.gameBoardCollectionView.reloadData()       // UI Update
     }
 
     @IBAction func clickHardDown(_ sender: UIButton) {
-        game.move(direction: MoveDirection.hardDown)        //
+        game.checkMove(direction: MoveDirection.hardDown)        //
         self.gameBoardCollectionView.reloadData()       // UI Update
     }
 }
@@ -115,7 +117,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if collectionView == gameBoardCollectionView {
-            return GameConfig().BoardCellY
+            return GameConfig().BoardSizeY
         } else {
             return game.nextBlock.shape.count
         }
@@ -124,7 +126,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == gameBoardCollectionView {
-            return GameConfig().BoardCellX
+            return GameConfig().BoardSizeX
         } else {
             return game.nextBlock.shape.count
         }
@@ -174,14 +176,14 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         if collectionView == gameBoardCollectionView {
-            let blockHorizontalNum = CGFloat(GameConfig().BoardCellX)
-            let screenWidth: CGFloat = collectionView.frame.width - blockHorizontalNum // 중간 마진이 1 들어간다. 그래서 마진 개수 만큼 뺀 공간을 구한다.
+            let blockHorizontalNum = CGFloat(GameConfig().BoardSizeX)
+            let screenWidth: CGFloat = collectionView.bounds.width - blockHorizontalNum // 중간 마진이 1 들어간다. 그래서 마진 개수 만큼 뺀 공간을 구한다.
 
             let width = screenWidth/blockHorizontalNum
             return CGSize(width: width, height: width)
         } else {
             let blockHorizontalNum = CGFloat(game.nextBlock.shape.count)
-            let screenWidth: CGFloat = collectionView.frame.width - blockHorizontalNum // 중간 마진이 1 들어간다. 그래서 마진 개수 만큼 뺀 공간을 구한다.
+            let screenWidth: CGFloat = collectionView.bounds.width - blockHorizontalNum // 중간 마진이 1 들어간다. 그래서 마진 개수 만큼 뺀 공간을 구한다.
 
             let width = screenWidth/blockHorizontalNum
             return CGSize(width: width, height: width)
@@ -189,6 +191,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         
     }
 
+    // UICollectionViewDelegateFlowLayout
     // block line 간의 간격 1 띄우기 위해
     // block 좌우간 마진은 1있다.
     // 세로 마진 주기 위한 설정

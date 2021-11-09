@@ -11,8 +11,8 @@ class Board {
     
     // 게임판의 가로 세로 길이 지정
     // 게임판 이중 배열의 크기로 들어갈 것
-    let width = GameConfig().BoardCellX
-    let height = GameConfig().BoardCellY
+    let width = GameConfig().BoardSizeX
+    let height = GameConfig().BoardSizeY
     
     // 이중 배열의 게임판 선언
     var gameBoard: [[Int]]
@@ -31,7 +31,7 @@ class Board {
     }
     
     // 블럭 움직인 것에 대한 게임판 다시 그리기
-    func redrawBoard() {
+    func insertCurrentBlock() {
         
         // 블럭의 shape 배열을 확인한다.
         for y in block.shape.indices {
@@ -45,7 +45,7 @@ class Board {
     }
     
     // 게임판에 들어가있는 블럭을 0으로 지운다. (옮기고 다시 그려줄 것)
-    func removeBlock() {
+    func removeCurrentBlock() {
         
         for y in block.shape.indices {
             for x in block.shape[y].indices {

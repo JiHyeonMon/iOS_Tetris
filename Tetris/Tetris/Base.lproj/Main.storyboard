@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rHY-al-d8T">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -41,43 +42,37 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qk6-BZ-OD7">
-                                <rect key="frame" x="214" y="662" width="50" height="50"/>
+                                <rect key="frame" x="214" y="664.5" width="50" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="50B-rk-Qcq"/>
                                     <constraint firstAttribute="height" constant="50" id="GKl-0b-Gjl"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
-                                    <backgroundConfiguration key="background" image="arrow.left" catalog="system"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" backgroundImage="arrow.left" catalog="system"/>
                                 <connections>
                                     <action selector="clickLeft:" destination="rHY-al-d8T" eventType="touchUpInside" id="Nk5-S2-lPL"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A3v-7Y-IOW">
-                                <rect key="frame" x="264" y="612" width="50" height="50"/>
+                                <rect key="frame" x="262" y="610" width="52" height="50.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="9v0-fN-zdR"/>
                                     <constraint firstAttribute="height" constant="50" id="Byc-gP-oVL"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
-                                    <backgroundConfiguration key="background" image="rotate.right" catalog="system"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" backgroundImage="rotate.right" catalog="system"/>
                                 <connections>
                                     <action selector="clickRotate:" destination="rHY-al-d8T" eventType="touchUpInside" id="ckG-TS-UhL"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIR-mG-J1d">
-                                <rect key="frame" x="314" y="662" width="50" height="50"/>
+                                <rect key="frame" x="314" y="664.5" width="50" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="Giu-A2-BzX"/>
                                     <constraint firstAttribute="height" constant="50" id="kaa-vc-njn"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
-                                    <backgroundConfiguration key="background" image="arrow.right" catalog="system"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" backgroundImage="arrow.right" catalog="system"/>
                                 <connections>
                                     <action selector="clickRight:" destination="rHY-al-d8T" eventType="touchUpInside" id="bMS-4u-ayo"/>
                                 </connections>
@@ -131,15 +126,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDj-04-abj">
-                                <rect key="frame" x="264" y="720" width="50" height="50"/>
+                                <rect key="frame" x="264" y="721" width="50" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="E4E-G5-Qcx"/>
                                     <constraint firstAttribute="height" constant="50" id="Ufh-xp-Vpm"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
-                                    <backgroundConfiguration key="background" image="arrow.down" catalog="system"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" backgroundImage="arrow.down" catalog="system"/>
                                 <connections>
                                     <action selector="clickHardDown:" destination="rHY-al-d8T" eventType="touchUpInside" id="Mg6-GB-exS"/>
                                 </connections>
