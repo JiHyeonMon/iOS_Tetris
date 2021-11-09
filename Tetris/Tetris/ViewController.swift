@@ -25,6 +25,7 @@ class ViewController: UIViewController {
     var timer: Timer!
     
     var gameboardView: GameBoardView!
+    var nextBlockView: NextBlockView!
     
         
     
@@ -42,7 +43,8 @@ class ViewController: UIViewController {
         
         // 게임 초기화.
         game.gameStart()
-        initialGameBoardView()
+        initGameBoardView()
+        initNextBlockView()
 
         
         updateUI()
@@ -112,6 +114,7 @@ class ViewController: UIViewController {
         self.levelLabel.text = String(self.game.level)
         self.scoreLabel.text = String(self.game.score)
         updateGameBoardView()
+        updateNextBlockView()
 
     }
     
@@ -119,7 +122,7 @@ class ViewController: UIViewController {
      수정해서 CustomView Methods
      */
      
-    private func initialGameBoardView() {
+    private func initGameBoardView() {
         gameboardView = GameBoardView(frame: CGRect(x: 0, y: 60, width: UIScreen.main.bounds.width, height: 40*12+12))
         
         view.addSubview(gameboardView)
@@ -128,5 +131,15 @@ class ViewController: UIViewController {
     private func updateGameBoardView() {
         gameboardView.drawGameBoard(gameBoard: game.board.gameBoard)
 
+    }
+    
+    private func initNextBlockView() {
+        nextBlockView = NextBlockView(frame: CGRect(x: 10, y: 40*12+12+60+10, width: 25*4+4, height: 25*4+4))
+        view.addSubview(nextBlockView)
+    }
+    
+    private func updateNextBlockView() {
+        nextBlockView.removeNextBlock()
+        nextBlockView.drawNextBlock(tetromino: game.nextBlock.shape)
     }
 }

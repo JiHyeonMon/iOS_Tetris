@@ -21,6 +21,7 @@
 		8999CDB8273399FB0051AE73 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDB7273399FB0051AE73 /* GameConfig.swift */; };
 		8999CDBA2733BB4A0051AE73 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDB92733BB4A0051AE73 /* Game.swift */; };
 		8999CDBC2733C8260051AE73 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDBB2733C8260051AE73 /* Board.swift */; };
+		93C5B121273AA29900DA4E80 /* NextBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5B120273AA29900DA4E80 /* NextBlockView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		8999CDB7273399FB0051AE73 /* GameConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfig.swift; sourceTree = "<group>"; };
 		8999CDB92733BB4A0051AE73 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		8999CDBB2733C8260051AE73 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		93C5B120273AA29900DA4E80 /* NextBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextBlockView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				8999CD8127335E830051AE73 /* SceneDelegate.swift */,
 				8999CDB7273399FB0051AE73 /* GameConfig.swift */,
 				89915DDF273A601600E08299 /* GameBoardView.swift */,
+				93C5B120273AA29900DA4E80 /* NextBlockView.swift */,
 				8999CDB92733BB4A0051AE73 /* Game.swift */,
 				8999CDB5273394F20051AE73 /* TetrominoObj.swift */,
 				8999CDBB2733C8260051AE73 /* Board.swift */,
@@ -274,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8999CD8427335E830051AE73 /* ViewController.swift in Sources */,
+				93C5B121273AA29900DA4E80 /* NextBlockView.swift in Sources */,
 				8999CDBA2733BB4A0051AE73 /* Game.swift in Sources */,
 				8999CDB8273399FB0051AE73 /* GameConfig.swift in Sources */,
 				89915DE0273A601600E08299 /* GameBoardView.swift in Sources */,
