@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-enum Block: CaseIterable{
+enum Tetromino: CaseIterable{
     
     case I, O, T, J, L, S, Z
 
@@ -32,28 +32,28 @@ enum Block: CaseIterable{
     }
 }
 
-enum Rotate {
-    case clock, counterClock
-}
-
-enum Direction {
-    case up, autoDown, hardDown, left, right
-}
+// 블럭이 회전할 수 있는 방향 값
+enum RotateDirection { case clock, counterClock }
+// 블럭이 움직일 수 있는 방향 값
+enum MoveDirection { case up, autoDown, hardDown, left, right }
 
 
-class Tetromino {
+class Block {
 
     // 첫 위치가 게임판의 가운데에 위치할 수 있게 가운데 위치로 고정
     var x: Int = Int(GameConfig().BoardCellX/2)-1
     var y: Int = 0
 
-    var shape: [[Int]] = Block.allCases.randomElement()?.shape ?? Block.O.shape
+    // Block 생성시 랜덤한 모양의 테트로미노 shape을 가진다.
+    var shape: [[Int]] = Tetromino.allCases.randomElement()?.shape ?? Tetromino.O.shape
 
 }
 
-extension Tetromino {
+extension Block {
     
-    func move(direction: Direction) {
+    // 블럭은 움직일 수 있다.
+    // 입력으로 받는 방향에 따라 x, y 좌표 움직임
+    func move(direction: MoveDirection) {
         switch direction {
         case .up: y -= 1
         case .autoDown, .hardDown: y += 1
@@ -62,7 +62,9 @@ extension Tetromino {
         }
     }
     
-    func roatate(direction: Rotate) {
+    // 블럭은 회전할 수 있다.
+    // 입력으로 받는 방향에 따라 shape 변화
+    func roatate(direction: RotateDirection) {
         switch direction {
         case .clock:
             var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)

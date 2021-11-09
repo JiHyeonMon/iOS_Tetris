@@ -16,7 +16,7 @@
 		8999CD9727335E850051AE73 /* TetrisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CD9627335E850051AE73 /* TetrisTests.swift */; };
 		8999CDA127335E850051AE73 /* TetrisUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDA027335E850051AE73 /* TetrisUITests.swift */; };
 		8999CDA327335E850051AE73 /* TetrisUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDA227335E850051AE73 /* TetrisUITestsLaunchTests.swift */; };
-		8999CDB6273394F20051AE73 /* Tetromino.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDB5273394F20051AE73 /* Tetromino.swift */; };
+		8999CDB6273394F20051AE73 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDB5273394F20051AE73 /* Block.swift */; };
 		8999CDB8273399FB0051AE73 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDB7273399FB0051AE73 /* GameConfig.swift */; };
 		8999CDBA2733BB4A0051AE73 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDB92733BB4A0051AE73 /* Game.swift */; };
 		8999CDBC2733C8260051AE73 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDBB2733C8260051AE73 /* Board.swift */; };
@@ -53,7 +53,7 @@
 		8999CD9C27335E850051AE73 /* TetrisUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TetrisUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8999CDA027335E850051AE73 /* TetrisUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisUITests.swift; sourceTree = "<group>"; };
 		8999CDA227335E850051AE73 /* TetrisUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		8999CDB5273394F20051AE73 /* Tetromino.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tetromino.swift; sourceTree = "<group>"; };
+		8999CDB5273394F20051AE73 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		8999CDB7273399FB0051AE73 /* GameConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfig.swift; sourceTree = "<group>"; };
 		8999CDB92733BB4A0051AE73 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		8999CDBB2733C8260051AE73 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
@@ -111,7 +111,7 @@
 				8999CD8127335E830051AE73 /* SceneDelegate.swift */,
 				8999CDB7273399FB0051AE73 /* GameConfig.swift */,
 				8999CDB92733BB4A0051AE73 /* Game.swift */,
-				8999CDB5273394F20051AE73 /* Tetromino.swift */,
+				8999CDB5273394F20051AE73 /* Block.swift */,
 				8999CDBB2733C8260051AE73 /* Board.swift */,
 				8999CD8327335E830051AE73 /* ViewController.swift */,
 				8999CD8527335E830051AE73 /* Main.storyboard */,
@@ -273,7 +273,7 @@
 				8999CD8427335E830051AE73 /* ViewController.swift in Sources */,
 				8999CDBA2733BB4A0051AE73 /* Game.swift in Sources */,
 				8999CDB8273399FB0051AE73 /* GameConfig.swift in Sources */,
-				8999CDB6273394F20051AE73 /* Tetromino.swift in Sources */,
+				8999CDB6273394F20051AE73 /* Block.swift in Sources */,
 				8999CDBC2733C8260051AE73 /* Board.swift in Sources */,
 				8999CD8027335E830051AE73 /* AppDelegate.swift in Sources */,
 				8999CD8227335E830051AE73 /* SceneDelegate.swift in Sources */,

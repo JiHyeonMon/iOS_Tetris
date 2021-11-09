@@ -13,8 +13,8 @@ class Game {
     
     // Game에 필요한 객체 선언
     var board : Board!
-    var currentBlock : Tetromino!
-    var nextBlock : Tetromino!
+    var currentBlock : Block!
+    var nextBlock : Block!
     
     // Game Level을 표시해줄 변수
     var level: Int
@@ -29,10 +29,12 @@ class Game {
         
         // Game에 필요한 board, currentBlock, nextBlock 객체 생성
         board = Board()
-        currentBlock = Tetromino()
-        nextBlock = Tetromino()
+        currentBlock = Block()
+        nextBlock = Block()
     }
     
+    // 제일 처음 게임 시작에 맞춰 값 설정
+    // 처음 게임 상태 설정, 첫 블럭 게임판에 넣고 그리기
     func gameStart() {
         // 게임 실행중인 상태 .progress로 설정
         gameState = .progress
@@ -41,14 +43,14 @@ class Game {
         board.addBlock(block: currentBlock)
         
         // 넣은 block을 실제 board의 게임판에 그리는 작업
-        board.reDrawBoard()
+        board.redrawBoard()
     
     }
 
     
     // Controller로부터 move 요청이 왔을 때, 실제 block 움직일 코드
     // enum으로 정의해둔 Direction 타입을 인자로 받는다. --> up, autoDown, hardDown, left, right
-    func move(direction: Direction) {
+    func move(direction: MoveDirection) {
         
         switch direction { // 각각의 direction마다 switch 문으로 실행
         case .up: return
@@ -65,13 +67,13 @@ class Game {
             if !isValid() {
                 // 한 칸 내렸는데 isValid 하지 못하다! 다시 한 칸 up 시키고 그린다.
                 board.block.move(direction: .up)
-                board.reDrawBoard()
+                board.redrawBoard()
                 // 더 이상 내려갈 수 없다 - line check, score check한다.
                 check()
                 return
             }
             // 실제 게임판에 블럭 값을 넣어 그린다.
-            board.reDrawBoard()
+            board.redrawBoard()
             
         // 사용자가 Down키를 눌렀을 때, hardDown이 실행되며 내려갈 수 있는 최대한의 칸까지 내려간다.
         // 곧장 해당 블럭 끝나고 newBlock 생성
@@ -85,7 +87,7 @@ class Game {
             
             // valid 하지않으면 한 칸 올리고 그리고 check
             board.block.move(direction: .up)
-            board.reDrawBoard()
+            board.redrawBoard()
             check()
 
             
@@ -100,7 +102,7 @@ class Game {
                 board.block.move(direction: .right)
             }
             // 결정된 자리 (옮겼거나, 그대로거나) 게임판에 그리기
-            board.reDrawBoard()
+            board.redrawBoard()
             
         // 사용자가 Right키를 눌렀을 때, 블럭을 오른쪽으로 한 칸 이동시킨다.
         case .right:
@@ -111,7 +113,7 @@ class Game {
                 board.block.move(direction: .left)
             }
             
-            board.reDrawBoard()
+            board.redrawBoard()
         }
         
     }
@@ -125,12 +127,19 @@ class Game {
             board.block.roatate(direction: .counterClock)
         }
         
-        board.reDrawBoard()
+        board.redrawBoard()
         
     }
     
+    // 블럭 움직임이 끝났을 때 check --> line check, score check, add new block
     private func check() {
-        checkScore() // 여기서 checkClear
+        // 몇 개의 line 지울 수 있는지 확인
+        let howManyLineClear = checkClearLine()
+        
+        // 해당 line 수만큼 점수 반영
+        checkScore(lineNum: howManyLineClear)
+        
+        // 새 블럭 생성
         addNewBlock()
     }
     
@@ -161,34 +170,35 @@ class Game {
     
     // 블럭 하나가 끝나고 나면 한 줄 Line 제거가 가능한지 확인
     // 여러 줄이 가능할 수도 있다. 몇 줄인지에 따라 점수에 반영되니 Int 로 반환한다.
-    private func checkClear() -> Int {
+    private func checkClearLine() -> Int {
         var clearLine = 0       // clear가능한 line 수
         
-        for y in board.gameBoard.indices {  //
+        for y in board.gameBoard.indices {  // 한 줄 씩 검사
             
             var isOccupied = true
             
             for x in board.gameBoard[y].indices {
                 
-                if board.gameBoard[y][x] == 0 {
-                    isOccupied = false
+                if board.gameBoard[y][x] == 0 {     // 해당 줄에 0이 하나라도 있으면 한 줄 다 찬게 아니다.
+                    isOccupied = false              // 해당 줄 지울 수 없다.
                     break
                 }
             }
             
-            if isOccupied {
+            if isOccupied {                         // 한 줄 검사했는데 0이 없다. - 지울 수 있다.
                 clearLine += 1
-                board.gameBoard.remove(at: y)
-                board.gameBoard.insert(Array(repeating: 0, count: GameConfig().BoardCellX), at: 0)
+                board.gameBoard.remove(at: y)       // 해당 줄 지운다.
+                board.gameBoard.insert(Array(repeating: 0, count: GameConfig().BoardCellX), at: 0)  // 제일 위애 빈 라인 추가
             }
         }
         
         return clearLine
     }
     
-    private func checkScore() {
-        score += GameConfig().BlockScore
-        score += checkClear()*GameConfig().LineScore
+    // 점수 계산
+    private func checkScore(lineNum: Int) {
+        score += GameConfig().BlockScore            // 블럭 하나 다 놓았을 때의 블럭 당 점수
+        score += lineNum * GameConfig().LineScore   // 블럭 하나 다 놓았을 때 지울 수 있는 라인 당 점수
         
         switch score {
         case 0..<200:
@@ -204,14 +214,20 @@ class Game {
         }
     }
     
-    
+    // 하나의 블럭 다 놓았을 때, 새로운 블럭 생성
     private func addNewBlock() {
+        // 보드의 블럭을 새로운 블럭으로 바꿔준다.
         board.addBlock(block: nextBlock)
         
+        // 바꿔준 새로운 블럭에 대한 valid 검사
         if !isValid() {
+            // valid 하지 않다면 게임 종료
             self.gameState = .gameover
             return
         }
-        nextBlock = Tetromino()
+        
+        // valid 하다면 게임판에 새 블럭 그려주고 그 다음의 새 블럭 생성
+        board.redrawBoard()
+        nextBlock = Block()
     }
 }

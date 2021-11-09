@@ -14,8 +14,12 @@ class ViewController: UIViewController {
      */
     
     // View Reference
+    // 게임판 collectionView
     @IBOutlet weak var gameBoardCollectionView: UICollectionView!
+    // 다음 블럭 보여줄 collectionView
     @IBOutlet weak var nextBlockCollectionView: UICollectionView!
+    
+    // level, score 보여줄 label
     @IBOutlet weak var levelLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     
@@ -42,17 +46,13 @@ class ViewController: UIViewController {
         
         // init 작업 - 실제 게임 데이터를 가진 Game 객체 생성
         game = Game()
-
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         
         // 게임 실행
         game.gameStart() // game내의 테트리스 게임에 필요한 데이터 생성 및 설정
         updateUI()
-
+        
         progress() // Controller에서 game 객체 값을 확인하고 View 업데이트
+
     }
 
     // 게임 실행
@@ -62,31 +62,23 @@ class ViewController: UIViewController {
         // 1초마다 아래 타이머 실행 (반복 설정)
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             
+            // Action
+            self.game.move(direction: Direction.autoDown)
+            
             // check
             if self.game.gameState == .gameover {
                 self.timer.invalidate()
             }
             
-            
-            // check
-            self.levelLabel.text = String(self.game.level)
-            self.scoreLabel.text = String(self.game.score)
-            
-            
-            // Action
-            self.game.move(direction: Direction.autoDown)
-            
-            
             // UI Update
             self.updateUI()
-            
-            
         }
         
         runLoop.add(timer, forMode: .common)
         
     }
     
+    // Game Model에서 값 가져와 View 업데이트 
     func updateUI() {
         self.levelLabel.text = String(self.game.level)
         self.scoreLabel.text = String(self.game.score)
@@ -103,17 +95,17 @@ class ViewController: UIViewController {
     }
     
     @IBAction func clickRight(_ sender: UIButton) {
-        game.move(direction: Direction.right)           //
+        game.move(direction: MoveDirection.right)           //
         self.gameBoardCollectionView.reloadData()       // UI Update
     }
     
     @IBAction func clickLeft(_ sender: UIButton) {
-        game.move(direction: Direction.left)            //
+        game.move(direction: MoveDirection.left)            //
         self.gameBoardCollectionView.reloadData()       // UI Update
     }
 
     @IBAction func clickHardDown(_ sender: UIButton) {
-        game.move(direction: Direction.hardDown)        //
+        game.move(direction: MoveDirection.hardDown)        //
         self.gameBoardCollectionView.reloadData()       // UI Update
     }
 }
@@ -180,7 +172,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     // UICollectionViewDelegateFlowLayout
     // Cell 크기 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+
         if collectionView == gameBoardCollectionView {
             let blockHorizontalNum = CGFloat(GameConfig().BoardCellX)
             let screenWidth: CGFloat = collectionView.frame.width - blockHorizontalNum // 중간 마진이 1 들어간다. 그래서 마진 개수 만큼 뺀 공간을 구한다.
