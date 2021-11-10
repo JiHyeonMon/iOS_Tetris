@@ -178,24 +178,31 @@ class Game {
     // 블럭 하나가 끝나고 나면 한 줄 Line 제거가 가능한지 확인
     // 여러 줄이 가능할 수도 있다. 몇 줄인지에 따라 점수에 반영되니 Int 로 반환한다.
     private func checkClearLine() -> Int {
-        var clearLine = 0       // clear가능한 line 수
+        // claer 가능한 line 수
+        var clearLine = 0
         
-        for y in board.gameBoard.indices {  // 한 줄 씩 검사
+        // 한 줄 씩 검사
+        for y in board.gameBoard.indices {
             
             var isOccupied = true
             
             for x in board.gameBoard[y].indices {
                 
-                if board.gameBoard[y][x] == 0 {     // 해당 줄에 0이 하나라도 있으면 한 줄 다 찬게 아니다.
-                    isOccupied = false              // 해당 줄 지울 수 없다.
+                // 해당 줄에 0이 하나라도 있으면 한 줄 다 찬게 아니다.
+                if board.gameBoard[y][x] == 0 {
+                    // 해당 줄 지울 수 없다.
+                    isOccupied = false
                     break
                 }
             }
             
-            if isOccupied {                         // 한 줄 검사했는데 0이 없다. - 지울 수 있다.
+            // 한 줄 검사했는데 0이 없다. - 지울 수 있다.
+            if isOccupied {
                 clearLine += 1
-                board.gameBoard.remove(at: y)       // 해당 줄 지운다.
-                board.gameBoard.insert(Array(repeating: 0, count: GameConfig().BoardSizeX), at: 0)  // 제일 위애 빈 라인 추가
+                // 해당 줄 지운다.
+                board.gameBoard.remove(at: y)
+                // 제일 위애 빈 라인 추가
+                board.gameBoard.insert(Array(repeating: 0, count: GameConfig().BoardSizeX), at: 0)
             }
         }
         
