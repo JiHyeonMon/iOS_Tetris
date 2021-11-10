@@ -37,7 +37,6 @@ class ViewController: UIViewController {
     // Actual entry point.
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
         // init 작업 - 실제 게임 데이터를 가진 Game 객체 생성
         game = Game()
@@ -53,27 +52,20 @@ class ViewController: UIViewController {
         
         // 게임 진행을 시작한다.
         startGameTimer()
-
     }
-
     
     /*************************************
        Event Handlers.
      */
     // Block Rotate를 위한 game 객체 rotate 메서드 호출
     @IBAction func clickRotate(_ sender: UIButton) {
-//        game.rotate()
-//        refreshAllGameBoard()
         if let dirtyRect = game.rotate(){
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
     }
     
     @IBAction func clickRight(_ sender: UIButton) {
-//        game.checkMove(direction: MoveDirection.right)
-//        refreshAllGameBoard()
-        if let dirtyRect = game.checkMove(direction: .right){
-            print(dirtyRect)
+        if let dirtyRect = game.getDirtyRectIsMovable(direction: .right){
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
     }
@@ -82,7 +74,7 @@ class ViewController: UIViewController {
 //        game.checkMove(direction: MoveDirection.left)
 //        refreshAllGameBoard()
         
-        if let dirtyRect = game.checkMove(direction: .left){
+        if let dirtyRect = game.getDirtyRectIsMovable(direction: .left){
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
     }
@@ -91,7 +83,7 @@ class ViewController: UIViewController {
 //        game.checkMove(direction: MoveDirection.hardDown)
 //        refreshAllGameBoard()
         
-        if let dirtyRect = game.checkMove(direction: .hardDown){
+        if let dirtyRect = game.getDirtyRectIsMovable(direction: .hardDown){
 //            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
             refreshAllGameBoard()
 
@@ -117,7 +109,7 @@ class ViewController: UIViewController {
     // game 객체 값을 확인하고 View 업데이트
     private func progress() {
         // Action
-        if let dirtyRect = game.checkMove(direction: .autoDown) {
+        if let dirtyRect = game.getDirtyRectIsMovable(direction: .autoDown) {
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
         

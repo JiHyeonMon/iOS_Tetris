@@ -57,7 +57,7 @@ class Game {
     
     // Controller로부터 move 요청이 왔을 때, 실제 block 움직일 코드
     // enum으로 정의해둔 Direction 타입을 인자로 받는다. --> up, autoDown, hardDown, left, right
-    func checkMove(direction: MoveDirection) -> (Int, Int, Int, Int)? {
+    func getDirtyRectIsMovable(direction: MoveDirection) -> (Int, Int, Int, Int)? {
         
         switch direction { // 각각의 direction마다 switch 문으로 실행
         case .up: break
