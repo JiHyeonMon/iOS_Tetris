@@ -15,7 +15,7 @@ class GameConfig{
     
     // 다음 블럭 보여줄 NextBlock 칸 수
     // 테트로미노의 최대 길이인 4에 맞춰 다음 블럭 view를 보여줌
-    let NextBlockSize = 4
+    let TetrominoSize = 4
     
     // 테트로미노에 맞는 색상 보여주기 위해 UIColor 타입 리스트 선언
     let BlockColor:[UIColor] = [UIColor.lightGray, UIColor.cyan, UIColor.yellow, UIColor.purple, UIColor.blue, UIColor.orange, UIColor.green, UIColor.red]

@@ -17,6 +17,8 @@ class GameBoardView: UIView {
     // 테트리스 게임 보드판을 UIImageView를 사이즈에 맞게 이중 배열로 만들 것
     var board: [[UIImageView]]!
     
+//    // GameConfig에서 미리 정의해둔 크기의 View를 그리기 위해 사이즈 지정
+//    let tetrominoSize = GameConfig().TetrominoSize
     
     /*******************************
      Initialization
@@ -51,8 +53,14 @@ class GameBoardView: UIView {
         for i in 0..<GameConfig().BoardSizeY {
             for j in 0..<GameConfig().BoardSizeX {
                 
-                board[i][j].backgroundColor = UIColor.lightGray
-                board[i][j].frame = CGRect(x: j*cellSize+j, y: i*cellSize+i, width: cellSize, height: cellSize)
+                let imageView: UIImageView = {
+                     let view = UIImageView()
+                     view.backgroundColor = UIColor.lightGray
+                     view.frame = CGRect(x: j*cellSize+j, y: i*cellSize+i, width: cellSize, height: cellSize)
+                     return view
+                 }()
+                
+                board[i][j] = imageView
                 
                 // 색상과 크기 지정 후 실제 SuperView에 넣어 화면에 보이게 한다.
                 self.addSubview(board[i][j])
@@ -77,6 +85,25 @@ class GameBoardView: UIView {
                 } else {
                     // 해당 숫자에 맞는 테트로미노 색상 설정
                     board[i][j].backgroundColor = GameConfig().BlockColor[gameBoard[i][j]]
+                }
+            }
+        }
+    }
+    
+    func redrawGameBoard(preTetromino: Tetromino, nextTetromino: Tetromino) {
+        for i in preTetromino.shape.indices {
+            for j in preTetromino.shape[i].indices {
+                if preTetromino.shape[i][j] > 0 {
+
+                board[i + preTetromino.y][j + preTetromino.x].backgroundColor = UIColor.lightGray
+                }
+            }
+        }
+        
+        for i in nextTetromino.shape.indices {
+            for j in nextTetromino.shape[i].indices {
+                if nextTetromino.shape[i][j] > 0 {
+                    board[i + nextTetromino.y][j + nextTetromino.x].backgroundColor = GameConfig().BlockColor[nextTetromino.shape[i][j]]
                 }
             }
         }

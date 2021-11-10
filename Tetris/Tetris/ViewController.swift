@@ -64,8 +64,12 @@ class ViewController: UIViewController {
     }
     
     @IBAction func clickRight(_ sender: UIButton) {
+        let preTetromino = game.board.block!
+        print(preTetromino.x)
         game.checkMove(direction: MoveDirection.right)
-        updateGameBoardView()
+//        updateGameBoardView()
+        print(game.board.block.x)
+        gameboardView.redrawGameBoard(preTetromino: preTetromino, nextTetromino: game.board.block)                    
     }
     
     @IBAction func clickLeft(_ sender: UIButton) {
@@ -123,7 +127,7 @@ class ViewController: UIViewController {
      */
      
     private func initGameBoardView() {
-        gameboardView = GameBoardView(frame: CGRect(x: 0, y: 60, width: UIScreen.main.bounds.width, height: 40*12+12))
+        gameboardView = GameBoardView(frame: CGRect(x: 0, y: 60, width: Int(UIScreen.main.bounds.width), height: GameConfig().GameBoardCellSize * GameConfig().BoardSizeY + GameConfig().BoardSizeY))
         
         view.addSubview(gameboardView)
     }

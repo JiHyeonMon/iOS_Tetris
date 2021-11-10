@@ -17,7 +17,7 @@ class NextBlockView: UIView {
     var tile: [[UIImageView]]!
     
     // GameConfig에서 미리 정의해둔 크기의 View를 그리기 위해 사이즈 지정
-    let nextBlockViewSize = GameConfig().NextBlockSize
+    let nextBlockViewSize = GameConfig().TetrominoSize
     
     /*******************************
      Initialization
@@ -51,8 +51,15 @@ class NextBlockView: UIView {
         for i in 0..<nextBlockViewSize {
             for j in 0..<nextBlockViewSize {
 
-                tile[i][j].backgroundColor = UIColor.lightGray
-                tile[i][j].frame = CGRect(x: j*cellSize+j, y: i*cellSize+i, width: cellSize, height: cellSize)
+                let imageView: UIImageView = {
+                     let view = UIImageView()
+                     view.backgroundColor = UIColor.lightGray
+                     view.frame = CGRect(x: j*cellSize+j, y: i*cellSize+i, width: cellSize, height: cellSize)
+                     return view
+                 }()
+                
+                tile[i][j] = imageView
+                
                 self.addSubview(tile[i][j])
 
             }
