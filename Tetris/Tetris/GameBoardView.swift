@@ -33,51 +33,38 @@ class GameBoardView: UIView {
     }
     
     // View 초기화
+    // 보드판을 구성할 cell imageview를 만들고 보드의 이중 배열에 맞게 크기 지정 후 넣어준다.
     private func initLayout() {
+        
+        // UIImageView 하나 만들어 cell에 넣어준다
+        self.cell = UIImageView()
+        // GameConfig에 정의된 게임보드 판에 맞게 이중 Array 만들어둔다.
+        self.board = Array(repeating: Array(repeating: cell, count: GameConfig().BoardSizeX), count: GameConfig().BoardSizeY)
+        
         // 보드판을 구성할 ImageView 하나의 사이즈 (정사각형으로 그릴 것)
         let cellSize = GameConfig().GameBoardCellSize
         
         // 해당 커스텀 뷰의 background 색상은 흰색
         self.backgroundColor = .white
         
-        // 데이터 선언
-        // UIImageView 하나 만들어 cell에 넣어준다
-        self.cell = UIImageView()
-        // GameConfig에 정의된 게임보드 판에 맞게 이중 Array 만들어둔다.
-        self.board = Array(repeating: Array(repeating: cell, count: GameConfig().BoardSizeX), count: GameConfig().BoardSizeY)
-        
         // 이제 board 돌면서 각각 cell들의 배경색 지정
         // 사이즈에 맞게 화면에 보일 수 있게 한다.
         for i in 0..<GameConfig().BoardSizeY {
             for j in 0..<GameConfig().BoardSizeX {
                 
-                board[i][j].backgroundColor = UIColor.lightGray
-                board[i][j].frame = CGRect(x: j*cellSize+j, y: i*cellSize+i, width: cellSize, height: cellSize)
+                // 색상과 크기, 위치를 지정한 실제 imageView를 보드판에 넣어준다.
+                let imageView: UIImageView = {
+                     let view = UIImageView()
+                     view.backgroundColor = UIColor.lightGray
+                     view.frame = CGRect(x: j*cellSize+j, y: i*cellSize+i, width: cellSize, height: cellSize)
+                     return view
+                 }()
+                
+                board[i][j] = imageView
                 
                 // 색상과 크기 지정 후 실제 SuperView에 넣어 화면에 보이게 한다.
                 self.addSubview(board[i][j])
                 
-            }
-        }
-    }
-    
-    /*******************************
-     Methods
-     **/
-    // Model로부터 값을 가진 gameBoard를 받아 View에 그린다.
-    func drawGameBoard(gameBoard: [[Int]]) {
-        // gameBoard 전체를 반복문을 통해 순회한다.
-        for i in gameBoard.indices {
-            for j in gameBoard[i].indices {
-                
-                // 0이면 회색, 숫자가 있다면 해당 테트로미노에 맞는 색상을 지정해서 그려준다.
-                if gameBoard[i][j] == 0 {
-                    // 기본 보드판 색
-                    board[i][j].backgroundColor = UIColor.lightGray
-                } else {
-                    // 해당 숫자에 맞는 테트로미노 색상 설정
-                    board[i][j].backgroundColor = GameConfig().BlockColor[gameBoard[i][j]]
-                }
             }
         }
     }

@@ -7,6 +7,9 @@
 
 import UIKit
 
+/**
+Game 동작에 필요한 정적 값 미리 선언
+ */
 class GameConfig{
     
     // 테트리스 판의 가로 세로 블럭 개수
@@ -37,4 +40,9 @@ class GameConfig{
     let GameBoardCellSize = 40
     // 다음 블럭을 보여줄 NextBlock view를 구성할 cell 사이즈
     let NextBlockCellSize = 25
+    
+    
+    // 화면에 그릴 커스텀 뷰의 위치 지정을 위한 margin값
+    let GameBoardTopMargin = 60
+    let NextBlockMargin = 10
 }

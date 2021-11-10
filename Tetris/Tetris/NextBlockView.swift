@@ -33,57 +33,38 @@ class NextBlockView: UIView {
         
     }
     
+    // View 초기화
+    // NextBlockView을 구성할 cell imageview를 만들고 이중 배열에 맞게 크기 지정 후 넣어준다.
     private func initLayout() {
-        // NextBlock을 보여줄 뷰를 구성할 ImageView 하나의 사이즈 (정사각형으로 그릴 것)
-        let cellSize = GameConfig().NextBlockCellSize
-
-        // 해당 커스텀 뷰의 background 색상은 흰색
-        self.backgroundColor = .white
-
         // 데이터 선언
         // UIImageView 하나 만들어 cell에 넣어준다
         self.cell = UIImageView()
         // GameConfig에 정의된 사이즈에 맞게 이중 Array 만들어둔다.
         self.tile = Array(repeating: Array(repeating: cell, count: nextBlockViewSize), count: nextBlockViewSize)
         
+        
+        // NextBlock을 보여줄 뷰를 구성할 ImageView 하나의 사이즈 (정사각형으로 그릴 것)
+        let cellSize = GameConfig().NextBlockCellSize
+
+        // 해당 커스텀 뷰의 background 색상은 흰색
+        self.backgroundColor = .white
+
         // 이제 tile 돌면서 각각 cell들의 배경색 지정
         // 사이즈에 맞게 화면에 보일 수 있게 한다.
         for i in 0..<nextBlockViewSize {
             for j in 0..<nextBlockViewSize {
-
-                tile[i][j].backgroundColor = UIColor.lightGray
-                tile[i][j].frame = CGRect(x: j*cellSize+j, y: i*cellSize+i, width: cellSize, height: cellSize)
+                
+                // 색상과 크기, 위치를 지정한 실제 imageView를 tile에 넣어준다.
+                let imageView: UIImageView = {
+                     let view = UIImageView()
+                     view.backgroundColor = UIColor.lightGray
+                     view.frame = CGRect(x: j*cellSize+j, y: i*cellSize+i, width: cellSize, height: cellSize)
+                     return view
+                 }()
+                
+                tile[i][j] = imageView
                 self.addSubview(tile[i][j])
 
-            }
-        }
-    }
-    
-    /*******************************
-     Methods
-     **/
-    
-    // 새로운 다음 블럭이 생성시 기존의 블럭 지워준다. (사이즈가 4*4로 고정이라 지워주지 않으면 이전 블럭이 계속 남아 사용자에게 보일 수 있다.)
-    // 전체 4*4 사이즈에 맞게 돌면서 모두 default lightGray 색으로 설정한다.
-    func removeNextBlock() {
-        for i in 0..<nextBlockViewSize {
-            for j in 0..<nextBlockViewSize {
-                tile[i][j].backgroundColor = UIColor.lightGray
-
-            }
-        }
-    }
-    
-    // 새로운 다음 블럭을 그려준다.
-    // NewBlock을 파라미터로 받아 tile에 그린다.
-    func drawNextBlock(tetromino: [[Int]]) {
-        for i in tetromino.indices {
-            for j in tetromino[i].indices {
-                if tetromino[i][j] == 0 {
-                    tile[i][j].backgroundColor = UIColor.lightGray
-                } else {
-                    tile[i][j].backgroundColor = GameConfig().BlockColor[tetromino[i][j]]
-                }
             }
         }
     }
