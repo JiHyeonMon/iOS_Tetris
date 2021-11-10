@@ -62,23 +62,38 @@ class ViewController: UIViewController {
      */
     // Block Rotate를 위한 game 객체 rotate 메서드 호출
     @IBAction func clickRotate(_ sender: UIButton) {
-        game.rotate()
-        updateGameBoardView()
+//        game.rotate()
+//        refreshAllGameBoard()
+        if let dirtyRect = game.rotate(){
+            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
+        }
     }
     
     @IBAction func clickRight(_ sender: UIButton) {
-        game.checkMove(direction: MoveDirection.right)
-        updateGameBoardView()
+//        game.checkMove(direction: MoveDirection.right)
+//        refreshAllGameBoard()
+        if let dirtyRect = game.checkMove(direction: .right){
+            print(dirtyRect)
+            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
+        }
     }
     
     @IBAction func clickLeft(_ sender: UIButton) {
-        game.checkMove(direction: MoveDirection.left)
-        updateGameBoardView()
+//        game.checkMove(direction: MoveDirection.left)
+//        refreshAllGameBoard()
+        
+        if let dirtyRect = game.checkMove(direction: .left){
+            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
+        }
     }
 
     @IBAction func clickHardDown(_ sender: UIButton) {
-        game.checkMove(direction: MoveDirection.hardDown)
-        updateGameBoardView()
+//        game.checkMove(direction: MoveDirection.hardDown)
+//        refreshAllGameBoard()
+        
+        if let dirtyRect = game.checkMove(direction: .hardDown){
+            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
+        }
         
     }
 
@@ -100,15 +115,16 @@ class ViewController: UIViewController {
     // game 객체 값을 확인하고 View 업데이트
     private func progress() {
         // Action
-        self.game.checkMove(direction: MoveDirection.autoDown)
-        
+        if let dirtyRect = game.checkMove(direction: .autoDown) {
+            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
+        }
         
         // UI Update
-        self.updateUI()
+//        updateUI()
         
         // check
-        if self.game.gameState == .gameover {
-            self.timer.invalidate()
+        if game.gameState == .gameover {
+            timer.invalidate()
         }
     }
     
@@ -132,7 +148,7 @@ class ViewController: UIViewController {
     
     // Game의 보드판이 바뀜에 따라 실제 View도 없데이트 한다.
     // Game Model의 gameBoard를 가져와 값에 맞게 View update
-    private func updateGameBoardView() {
+    private func refreshAllGameBoard() {
         // gameBoard 전체를 반복문을 통해 순회한다.
         for i in game.board.gameBoard.indices {
             for j in game.board.gameBoard[i].indices {
@@ -148,6 +164,18 @@ class ViewController: UIViewController {
             }
         }
         
+    }
+    
+    func refreshDirtyRectGameBoard(dirtyRect: (startX: Int, startY: Int, endX: Int, endY: Int)) {
+        for dy in dirtyRect.startY...dirtyRect.endY {
+            for dx in dirtyRect.startX...dirtyRect.endX {
+//                if game.board.gameBoard[dy][dx] > 0 {
+                    gameboardView.board[dy][dx].backgroundColor = GameConfig().BlockColor[game.board.gameBoard[dy][dx]]
+
+//                }
+
+            }
+        }
     }
     
     // Next Block이 바뀜에 따라 실제 View도 없데이트
@@ -185,7 +213,7 @@ class ViewController: UIViewController {
     private func updateUI() {
         self.levelLabel.text = String(self.game.level)
         self.scoreLabel.text = String(self.game.score)
-        updateGameBoardView()
+//        refreshAllGameBoard()
         updateNextBlockView()
     }
 }

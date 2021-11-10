@@ -21,6 +21,10 @@ class Game {
     // Game Score를 표시해줄 변수
     var score: Int
     
+    // 움직임에 따라 변화하는 구간 지정 x, y, 숫자든 배열
+    var dirtyRect: (Int,Int, Int, Int)!
+    
+    
     // Game에서 필요한 객체 및 변수 초기화 작업
     init() {
         // 초기 레벨 1, 점수 0으로 설정
@@ -53,14 +57,14 @@ class Game {
     
     // Controller로부터 move 요청이 왔을 때, 실제 block 움직일 코드
     // enum으로 정의해둔 Direction 타입을 인자로 받는다. --> up, autoDown, hardDown, left, right
-    func checkMove(direction: MoveDirection) {
+    func checkMove(direction: MoveDirection) -> (Int, Int, Int, Int)? {
         
         switch direction { // 각각의 direction마다 switch 문으로 실행
         case .up: break
         
         // Game이 진행되며 Timer에 맞춰 자동으로 autoDown으로 블럭이 한 칸씩 내려온다.
         case .autoDown:
-            
+            print("autodown")
             // 게임판에 현재 블럭 remove로 0으로 지운다. (지우고 옮기고 valid 검사)
             board.removeCurrentBlock()
             // 블럭의 y 좌표 옮긴다.
@@ -73,10 +77,15 @@ class Game {
                 board.insertCurrentBlock()
                 // 더 이상 내려갈 수 없다 - line check, score check한다.
                 prepareNext()
-                break
+//                break
+                return (0, 0, GameConfig().BoardSizeX-1, GameConfig().BoardSizeY-1)
             }
             // 실제 게임판에 블럭 값을 넣어 그린다.
             board.insertCurrentBlock()
+            
+            dirtyRect = (board.block.x, board.block.y-1, board.block.x+board.block.shape[0].count, board.block.y+board.block.shape.count)
+            
+            return dirtyRect
             
         // 사용자가 Down키를 눌렀을 때, hardDown이 실행되며 내려갈 수 있는 최대한의 칸까지 내려간다.
         // 곧장 해당 블럭 끝나고 newBlock 생성
@@ -92,7 +101,10 @@ class Game {
             board.block.move(direction: .up)
             board.insertCurrentBlock()
             prepareNext()
-
+            
+            dirtyRect = (board.block.x, board.block.y, board.block.x+board.block.shape[0].count, GameConfig().BoardSizeY-1)
+            
+            return dirtyRect
             
         // 사용자가 Left키를 눌렀을 때, 블럭을 왼쪽으로 한 칸 이동시킨다.
         case .left:
@@ -103,9 +115,14 @@ class Game {
             
             if !isValid() { // 옮긴 블럭이 isValid 하지 않으면 다시 원래 자리로 옮긴다.
                 board.block.move(direction: .right)
+                return nil
             }
             // 결정된 자리 (옮겼거나, 그대로거나) 게임판에 그리기
             board.insertCurrentBlock()
+            
+            dirtyRect = (board.block.x, board.block.y, board.block.x+board.block.shape[0].count+1, board.block.y+board.block.shape.count)
+            return dirtyRect
+
             
         // 사용자가 Right키를 눌렀을 때, 블럭을 오른쪽으로 한 칸 이동시킨다.
         case .right:
@@ -114,24 +131,30 @@ class Game {
             
             if !isValid() {
                 board.block.move(direction: .left)
+                return nil
             }
             
             board.insertCurrentBlock()
+            dirtyRect = (board.block.x-1, board.block.y, board.block.x+board.block.shape[0].count, board.block.y+board.block.shape.count)
+            return dirtyRect
         }
-        
+        return nil
     }
     
     // 사용자가 rotate키를 눌렀을 때, 블럭을 시계방향으로 회전 시킨다.
-    func rotate() {
+    func rotate() -> (Int, Int, Int, Int)? {
         board.removeCurrentBlock()
         board.block.roatate(direction: .clock)
         
         if !isValid() {
             board.block.roatate(direction: .counterClock)
+            return nil
         }
         
         board.insertCurrentBlock()
         
+        dirtyRect = (board.block.x, board.block.y, board.block.x+board.block.shape[0].count, board.block.y+board.block.shape.count)
+        return dirtyRect
     }
     
     /************************
