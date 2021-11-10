@@ -92,7 +92,9 @@ class ViewController: UIViewController {
 //        refreshAllGameBoard()
         
         if let dirtyRect = game.checkMove(direction: .hardDown){
-            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
+//            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
+            refreshAllGameBoard()
+
         }
         
     }
@@ -120,7 +122,7 @@ class ViewController: UIViewController {
         }
         
         // UI Update
-//        updateUI()
+        updateUI()
         
         // check
         if game.gameState == .gameover {
@@ -169,10 +171,9 @@ class ViewController: UIViewController {
     func refreshDirtyRectGameBoard(dirtyRect: (startX: Int, startY: Int, endX: Int, endY: Int)) {
         for dy in dirtyRect.startY...dirtyRect.endY {
             for dx in dirtyRect.startX...dirtyRect.endX {
-//                if game.board.gameBoard[dy][dx] > 0 {
+                if dy <= GameConfig().BoardSizeY-1 && dx <= GameConfig().BoardSizeX-1 && 0 <= dx {
                     gameboardView.board[dy][dx].backgroundColor = GameConfig().BlockColor[game.board.gameBoard[dy][dx]]
-
-//                }
+                }
 
             }
         }

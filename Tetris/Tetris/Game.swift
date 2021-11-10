@@ -64,7 +64,6 @@ class Game {
         
         // Game이 진행되며 Timer에 맞춰 자동으로 autoDown으로 블럭이 한 칸씩 내려온다.
         case .autoDown:
-            print("autodown")
             // 게임판에 현재 블럭 remove로 0으로 지운다. (지우고 옮기고 valid 검사)
             board.removeCurrentBlock()
             // 블럭의 y 좌표 옮긴다.
@@ -83,11 +82,7 @@ class Game {
             // 실제 게임판에 블럭 값을 넣어 그린다.
             board.insertCurrentBlock()
             
-            var endBottom = board.block.y+board.block.shape.count
-            if endBottom > GameConfig().BoardSizeY-1 {
-                endBottom = GameConfig().BoardSizeY-1
-            }
-            dirtyRect = (board.block.x, board.block.y-1, board.block.x+board.block.shape[0].count, endBottom)
+            dirtyRect = (board.block.x, board.block.y-1, board.block.x+board.block.shape[0].count, board.block.y+board.block.shape.count)
             
             return dirtyRect
             
@@ -124,11 +119,7 @@ class Game {
             // 결정된 자리 (옮겼거나, 그대로거나) 게임판에 그리기
             board.insertCurrentBlock()
             
-            var endRight = board.block.x+board.block.shape[0].count+1
-            if endRight > GameConfig().BoardSizeX-1 {
-                endRight = GameConfig().BoardSizeX-1
-            }
-            dirtyRect = (board.block.x, board.block.y, endRight, board.block.y+board.block.shape.count)
+            dirtyRect = (board.block.x, board.block.y, board.block.x+board.block.shape[0].count, board.block.y+board.block.shape.count)
             return dirtyRect
 
             
@@ -144,11 +135,7 @@ class Game {
             
             board.insertCurrentBlock()
             
-            var endRight = board.block.x+board.block.shape[0].count
-            if endRight > GameConfig().BoardSizeX-1 {
-                endRight = GameConfig().BoardSizeX-1
-            }
-            dirtyRect = (board.block.x-1, board.block.y, endRight, board.block.y+board.block.shape.count)
+            dirtyRect = (board.block.x-1, board.block.y, board.block.x+board.block.shape[0].count, board.block.y+board.block.shape.count)
             return dirtyRect
         }
         return nil
