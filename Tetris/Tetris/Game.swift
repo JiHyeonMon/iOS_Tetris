@@ -204,22 +204,19 @@ class Game {
     
     // 점수 계산
     private func checkScore(lineNum: Int) {
-        score += GameConfig().BlockScore            // 블럭 하나 다 놓았을 때의 블럭 당 점수
-        score += lineNum * GameConfig().LineScore   // 블럭 하나 다 놓았을 때 지울 수 있는 라인 당 점수
+        // 블럭 하나 다 놓았을 때의 블럭 당 점수
+        score += GameConfig().BlockScore
+        // 블럭 하나 다 놓았을 때 지울 수 있는 라인 당 점수
+        score += lineNum * GameConfig().LineScore
         
         
-        // 점수 마련해라~~~~~~~~~~~~~~~ GameConfig로
-        switch score {
-        case 0..<200:
-            level = 1
-        case 100..<400:
-            level = 2
-        case 400..<750:
-            level = 3
-        case 750..<1000:
-            level = 4
-        default:
-            level = 5
+        // GameConfig에서 정의해둔 점수에 맞게 레벨 세팅된다
+        for i in 1..<GameConfig().GameScore.count {
+            // score가 정의해둔 점수 범위 내에 있을 경우 해당 레벨 설정
+            if (GameConfig().GameScore[i-1]...GameConfig().GameScore[i]).contains(score) {
+                level = i
+                break
+            }
         }
     }
     
