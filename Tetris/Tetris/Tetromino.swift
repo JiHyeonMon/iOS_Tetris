@@ -9,12 +9,14 @@ import Foundation
 import UIKit
 
 /**
- 
+ 테트로미노의 각가지 케이스에 따른 shape 정의
  */
 enum TetrominoDefinition: CaseIterable{
     
+    // 테트로미노 블럭의 총 케이스 7가지
     case I, O, T, J, L, S, Z
     
+    // 각 케이스에 따른 shape정의 
     var shape: [[Int]] {
         switch self {
         case .I:
@@ -42,9 +44,9 @@ enum MoveDirection { case up, autoDown, hardDown, left, right }
 
 
 /**
- 
+ 게임판에서의 하나의 실제 테트로미노 블럭
  */
-class TetrominoObj {
+class Tetromino {
 
     // 첫 위치가 게임판의 가운데에 위치할 수 있게 가운데 위치로 고정
     var x: Int = Int(GameConfig().BoardSizeX/2)-1

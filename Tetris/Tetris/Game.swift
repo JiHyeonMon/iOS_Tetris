@@ -13,8 +13,8 @@ class Game {
     
     // Game에 필요한 객체 선언
     var board : Board!
-    var currentBlock : TetrominoObj!
-    var nextBlock : TetrominoObj!
+    var currentBlock : Tetromino!
+    var nextBlock : Tetromino!
     
     // Game Level을 표시해줄 변수
     var level: Int
@@ -29,8 +29,8 @@ class Game {
         
         // Game에 필요한 board, currentBlock, nextBlock 객체 생성
         board = Board()
-        currentBlock = TetrominoObj()
-        nextBlock = TetrominoObj()
+        currentBlock = Tetromino()
+        nextBlock = Tetromino()
     }
     
     /************************
@@ -240,6 +240,6 @@ class Game {
         
         // valid 하다면 게임판에 새 블럭 그려주고 그 다음의 새 블럭 생성
         board.insertCurrentBlock()
-        nextBlock = TetrominoObj()
+        nextBlock = Tetromino()
     }
 }
