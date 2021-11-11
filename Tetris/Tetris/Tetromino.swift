@@ -6,11 +6,17 @@
 //
 
 import Foundation
+import UIKit
 
-enum Block: CaseIterable{
+/**
+ 테트로미노의 각가지 케이스에 따른 shape 정의
+ */
+enum TetrominoDefinition: CaseIterable{
     
+    // 테트로미노 블럭의 총 케이스 7가지
     case I, O, T, J, L, S, Z
-
+    
+    // 각 케이스에 따른 shape정의 
     var shape: [[Int]] {
         switch self {
         case .I:
@@ -29,70 +35,62 @@ enum Block: CaseIterable{
             return [[0,7,0], [7,7,0], [7,0,0]]
         }
     }
-    
-    mutating func rotate() -> [[Int]] {
-        var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
-        for i in shape.indices {
-            for j in shape[i].indices {
-                rotateTetromino[i][j] = shape[shape.endIndex-1-j][i]
-            }
-        }
-        return rotateTetromino
-    }
-
 }
 
-enum Rotate {
-    case clock, counterClock
-}
-
-enum Direction {
-    case up, down, left, right
-}
+// 블럭이 회전할 수 있는 방향 값
+enum RotateDirection { case clock, counterClock }
+// 블럭이 움직일 수 있는 방향 값
+enum MoveDirection { case up, autoDown, hardDown, left, right }
 
 
+/**
+ 게임판에서의 하나의 실제 테트로미노 블럭
+ */
 class Tetromino {
 
     // 첫 위치가 게임판의 가운데에 위치할 수 있게 가운데 위치로 고정
-    var x: Int = Int(GameConfig().BoardCellX/2)-1
+    var x: Int = Int(GameConfig().BoardSizeX/2)-1
     var y: Int = 0
 
-    var block = Block.allCases.randomElement() ?? .O
+    // Block 생성시 랜덤한 모양의 테트로미노 shape을 가진다.
+    var shape: [[Int]] = TetrominoDefinition.allCases.randomElement()?.shape ?? TetrominoDefinition.O.shape
 
-}
-
-extension Tetromino {
     
-    func move(direction: Direction) {
+    // 블럭은 움직일 수 있다.
+    // 입력으로 받는 방향에 따라 x, y 좌표 움직임
+    func move(direction: MoveDirection) {
         switch direction {
         case .up: y -= 1
-        case .down: y += 1 
+        case .autoDown, .hardDown: y += 1
         case .left: x -= 1
         case .right: x += 1 
         }
     }
     
-//    func roatate() {
-//        block.shape = block.rotate()
-//    }
+    // 블럭은 회전할 수 있다.
+    // 입력으로 받는 방향에 따라 shape 변화
+    func roatate(direction: RotateDirection) {
+        switch direction {
+        case .clock:
+            var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
+            
+            for i in shape.indices {
+                for j in shape[i].indices {
+                    rotateTetromino[i][j] = shape[shape.endIndex-1-j][i]
+                }
+            }
+            self.shape = rotateTetromino
+            
+        case .counterClock:
+            var rotateTetromino = Array(repeating: Array(repeating: 0, count: shape.count), count: shape.count)
+            
+            for i in shape.indices {
+                for j in shape[i].indices {
+                    rotateTetromino[shape.endIndex-1-j][i] = shape[i][j]
+                }
+            }
+            self.shape = rotateTetromino
+        }
+
+    }
 }
-
-/*
- fun rotate() {
-     // 회전한 테트로미노를 넣을 배열 새로 만든다.
-     val rotateTetromino = Array(shape.size) { Array(shape.size) { 0 } }
-
-     // 시계방향으로 새로운 배열에 기존 값 넣는다.
-     // 012     630
-     // 345  -> 741
-     // 678     852
-     for (i in shape.indices) {
-         for (j in shape[i].indices) {
-             rotateTetromino[i][j] = shape[shape.size - 1 - j][i]
-         }
-     }
-
-     // 회전한 테트로미노를 기존 모양에 넣어준다.
-     shape = rotateTetromino
- }
- */

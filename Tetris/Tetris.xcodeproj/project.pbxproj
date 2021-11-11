@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		89915DE0273A601600E08299 /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89915DDF273A601600E08299 /* GameBoardView.swift */; };
 		8999CD8027335E830051AE73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CD7F27335E830051AE73 /* AppDelegate.swift */; };
 		8999CD8227335E830051AE73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CD8127335E830051AE73 /* SceneDelegate.swift */; };
 		8999CD8427335E830051AE73 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CD8327335E830051AE73 /* ViewController.swift */; };
@@ -16,6 +17,11 @@
 		8999CD9727335E850051AE73 /* TetrisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CD9627335E850051AE73 /* TetrisTests.swift */; };
 		8999CDA127335E850051AE73 /* TetrisUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDA027335E850051AE73 /* TetrisUITests.swift */; };
 		8999CDA327335E850051AE73 /* TetrisUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDA227335E850051AE73 /* TetrisUITestsLaunchTests.swift */; };
+		8999CDB6273394F20051AE73 /* Tetromino.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDB5273394F20051AE73 /* Tetromino.swift */; };
+		8999CDB8273399FB0051AE73 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDB7273399FB0051AE73 /* GameConfig.swift */; };
+		8999CDBA2733BB4A0051AE73 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDB92733BB4A0051AE73 /* Game.swift */; };
+		8999CDBC2733C8260051AE73 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8999CDBB2733C8260051AE73 /* Board.swift */; };
+		93C5B121273AA29900DA4E80 /* NextBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5B120273AA29900DA4E80 /* NextBlockView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		89915DDF273A601600E08299 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
 		8999CD7C27335E830051AE73 /* Tetris.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tetris.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8999CD7F27335E830051AE73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8999CD8127335E830051AE73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +56,11 @@
 		8999CD9C27335E850051AE73 /* TetrisUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TetrisUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8999CDA027335E850051AE73 /* TetrisUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisUITests.swift; sourceTree = "<group>"; };
 		8999CDA227335E850051AE73 /* TetrisUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		8999CDB5273394F20051AE73 /* Tetromino.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tetromino.swift; sourceTree = "<group>"; };
+		8999CDB7273399FB0051AE73 /* GameConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfig.swift; sourceTree = "<group>"; };
+		8999CDB92733BB4A0051AE73 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		8999CDBB2733C8260051AE73 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		93C5B120273AA29900DA4E80 /* NextBlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextBlockView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +113,12 @@
 			children = (
 				8999CD7F27335E830051AE73 /* AppDelegate.swift */,
 				8999CD8127335E830051AE73 /* SceneDelegate.swift */,
+				8999CDB7273399FB0051AE73 /* GameConfig.swift */,
+				89915DDF273A601600E08299 /* GameBoardView.swift */,
+				93C5B120273AA29900DA4E80 /* NextBlockView.swift */,
+				8999CDB92733BB4A0051AE73 /* Game.swift */,
+				8999CDB5273394F20051AE73 /* Tetromino.swift */,
+				8999CDBB2733C8260051AE73 /* Board.swift */,
 				8999CD8327335E830051AE73 /* ViewController.swift */,
 				8999CD8527335E830051AE73 /* Main.storyboard */,
 				8999CD8827335E840051AE73 /* Assets.xcassets */,
@@ -259,6 +277,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8999CD8427335E830051AE73 /* ViewController.swift in Sources */,
+				93C5B121273AA29900DA4E80 /* NextBlockView.swift in Sources */,
+				8999CDBA2733BB4A0051AE73 /* Game.swift in Sources */,
+				8999CDB8273399FB0051AE73 /* GameConfig.swift in Sources */,
+				89915DE0273A601600E08299 /* GameBoardView.swift in Sources */,
+				8999CDB6273394F20051AE73 /* Tetromino.swift in Sources */,
+				8999CDBC2733C8260051AE73 /* Board.swift in Sources */,
 				8999CD8027335E830051AE73 /* AppDelegate.swift in Sources */,
 				8999CD8227335E830051AE73 /* SceneDelegate.swift in Sources */,
 			);
@@ -439,6 +463,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B6T64C4SDZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tetris/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -446,6 +471,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -466,6 +492,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B6T64C4SDZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tetris/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -473,6 +500,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

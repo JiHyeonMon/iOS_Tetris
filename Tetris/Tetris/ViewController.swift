@@ -9,117 +9,183 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    /*************************************
+     Data Initialization
+     */
     
-
+    // level, score 보여줄 label
+    @IBOutlet weak var levelLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
+    
     // 실제 게임 진행할 게임 객체 생성
     var game : Game!
     
-    // GameConfig에 정의한 보드 사이즈 만큼의 보드 이중 배열을 0으로 초기화
-//    var gameBoard: [[Int]] = Array(repeating: Array(repeating: 0, count: GameConfig().BoardCellX), count: GameConfig().BoardCellY)
-//    var board = Board()
-    
-    // 반복을 위한 RunLoop 생성
+    // 반복을 위한 RunLoop, Timer 객체 선언
     let runLoop = RunLoop.current
+    var timer: Timer!
     
+    // 화면에 그려줄 게임판을 GameBoardView를 통해 작성
+    var gameboardView: GameBoardView!
+    // 화면에 그려줄 다음 테트로미노를 NextBlockView를 통해 작성
+    var nextBlockView: NextBlockView!
+        
+    
+    /*************************************
+       Life Cycle Management.
+     */
+    // LifeCycle Start - Initialization.
+    // Actual entry point.
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
+
+        // init 작업 - 실제 게임 데이터를 가진 Game 객체 생성
+        game = Game()
         
-        // delegate와 datasource에서 제공하는 메서드를 이용해서 collectionView를 그림
-        // 해당 메서드 구현하기 위해 프로토콜 참조하고
-        // 해당 delegate, datasource 연결해준다.
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        // 게임 초기화.
+        // 게임에 필요한 객체 생성 및 보드판, 첫 테트로미노 생성
+        game.gameStart()
+        // 화면에 그릴 Board와 다음 테트로미노를 보여줄 View를 현재 View에 추가하여 그릴 수 있게 한다.
+        initGameBoardView()
+        initNextBlockView()
+
+        updateUI()
         
-        // init 작업
-        // 여기서 초기 화면 그리고 클로저도 전달받아 리프레쉬
-        game = Game(reDrawBoardAction: {
-            self.collectionView.reloadData()
-        })
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // 실행
-        progress()
+        // 게임 진행을 시작한다.
+        startGameTimer()
+
     }
 
-    // 게임 실행
-    func progress() {
-        
-        let isRunning = true
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {_ in
-            self.game.move(direction: Direction.down)
-        }
-        
-        while isRunning {
-            runLoop.run(until: Date().addingTimeInterval(0.1))
-        }
-    }
     
-
+    /*************************************
+       Event Handlers.
+     */
+    // Block Rotate를 위한 game 객체 rotate 메서드 호출
     @IBAction func clickRotate(_ sender: UIButton) {
-
+        game.rotate()
+        updateGameBoardView()
     }
     
     @IBAction func clickRight(_ sender: UIButton) {
-        game.move(direction: Direction.right)
+        game.checkMove(direction: MoveDirection.right)
+        updateGameBoardView()
     }
     
     @IBAction func clickLeft(_ sender: UIButton) {
-        game.move(direction: Direction.left)
+        game.checkMove(direction: MoveDirection.left)
+        updateGameBoardView()
     }
-}
 
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return GameConfig().BoardCellY
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return GameConfig().BoardCellX
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+    @IBAction func clickHardDown(_ sender: UIButton) {
+        game.checkMove(direction: MoveDirection.hardDown)
+        updateGameBoardView()
         
-        // 게임 보드판 그리기
-        // 블럭 색상 맞추기
-        switch game.board.gameBoard[indexPath[0]][indexPath[1]] {
-        case 1: cell.backgroundColor = GameConfig().BlockColor[1]
-        case 2: cell.backgroundColor = GameConfig().BlockColor[2]
-        case 3: cell.backgroundColor = GameConfig().BlockColor[3]
-        case 4: cell.backgroundColor = GameConfig().BlockColor[4]
-        case 5: cell.backgroundColor = GameConfig().BlockColor[5]
-        case 6: cell.backgroundColor = GameConfig().BlockColor[6]
-        case 7: cell.backgroundColor = GameConfig().BlockColor[7]
-        default: cell.backgroundColor = UIColor.lightGray
+    }
+
+
+    /*************************************
+      Game flow methods.
+     */
+    
+    private func startGameTimer() {
+        // 1초마다 아래 타이머 실행 (반복 설정)
+        timer = Timer.scheduledTimer(withTimeInterval: GameConfig().GameTimer, repeats: true) { _ in
+            self.progress()
         }
         
-        return cell
+        runLoop.add(timer, forMode: .common)
     }
     
-    // UICollectionViewDelegateFlowLayout
-    // Cell 크기 설정
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let blockHorizontalNum = CGFloat(GameConfig().BoardCellX)
-        let screenWidth: CGFloat = collectionView.frame.width - blockHorizontalNum // 중간 마진이 1 들어간다. 그래서 마진 개수 만큼 뺀 공간을 구한다.
-
-        let width = screenWidth/blockHorizontalNum
-        return CGSize(width: width, height: width)
-    }
-
-    // block line 간의 간격 1 띄우기 위해
-    // block 좌우간 마진은 1있다.
-    // 세로 마진 주기 위한 설정
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let sectionInsets = UIEdgeInsets(top: 1, left: 0, bottom: 0, right: 0)
-        return sectionInsets
+    // 게임 실행
+    // game 객체 값을 확인하고 View 업데이트
+    private func progress() {
+        // Action
+        self.game.checkMove(direction: MoveDirection.autoDown)
+        
+        
+        // UI Update
+        self.updateUI()
+        
+        // check
+        if self.game.gameState == .gameover {
+            self.timer.invalidate()
+        }
     }
     
+    /**********************************
+     Methoed associated view update
+     */
+    // 테트리스 게임판을 그릴 GameBoardView의 크기 및 위치 지정 후 실제 현재 화면에 add한다.
+    private func initGameBoardView() {
+        gameboardView = GameBoardView(frame: CGRect(x: 0, y: GameConfig().GameBoardTopMargin, width: Int(UIScreen.main.bounds.width), height: GameConfig().GameBoardCellSize*GameConfig().BoardSizeY+GameConfig().BoardSizeY))
+        
+        view.addSubview(gameboardView)
+    }
+    
+    // 다음 블럭을 보여줄 view를 그릴 NextBlockView의 크기 및 위치 지정 후 실제 현재 화면에 add한다.
+    private func initNextBlockView() {
+        nextBlockView = NextBlockView(frame: CGRect(x: GameConfig().NextBlockMargin,
+                                                    y: GameConfig().GameBoardCellSize*GameConfig().BoardSizeY+GameConfig().BoardSizeY + GameConfig().GameBoardTopMargin + GameConfig().NextBlockMargin,
+                                                    width: GameConfig().NextBlockCellSize*GameConfig().NextBlockSize+GameConfig().NextBlockSize, height: GameConfig().NextBlockCellSize*GameConfig().NextBlockSize+GameConfig().NextBlockSize))
+        view.addSubview(nextBlockView)
+    }
+    
+    // Game의 보드판이 바뀜에 따라 실제 View도 없데이트 한다.
+    // Game Model의 gameBoard를 가져와 값에 맞게 View update
+    private func updateGameBoardView() {
+        // gameBoard 전체를 반복문을 통해 순회한다.
+        for i in game.board.gameBoard.indices {
+            for j in game.board.gameBoard[i].indices {
+                
+                // 0이면 회색, 숫자가 있다면 해당 테트로미노에 맞는 색상을 지정해서 그려준다.
+                if game.board.gameBoard[i][j] == 0 {
+                    // 기본 보드판 색
+                    gameboardView.board[i][j].backgroundColor = UIColor.lightGray
+                } else {
+                    // 해당 숫자에 맞는 테트로미노 색상 설정
+                    gameboardView.board[i][j].backgroundColor = GameConfig().BlockColor[game.board.gameBoard[i][j]]
+                }
+            }
+        }
+        
+    }
+    
+    // Next Block이 바뀜에 따라 실제 View도 없데이트
+    private func updateNextBlockView() {
+        // 현재 화면에 그려진 NextBlock 지운다.
+        removeNextBlock()
+        // 새로운 NextBlock을 화면에 그려준다.
+        drawNextBlock()
+    }
+    
+    // Next Block이 바뀜에 따라 현재 화면에 그려진 NextBlock 지운다.
+    func removeNextBlock() {
+        // 전체 4*4 사이즈에 맞게 돌면서 모두 default lightGray 색으로 설정한다.
+        for i in 0..<GameConfig().NextBlockSize {
+            for j in 0..<GameConfig().NextBlockSize {
+                nextBlockView.tile[i][j].backgroundColor = UIColor.lightGray
+
+            }
+        }
+    }
+    
+    // 새로운 다음 블럭을 그려준다.
+    // Game Model의 NewBlock을 실제 화면에 그린다.
+    func drawNextBlock() {
+        for i in game.nextBlock.shape.indices {
+            for j in game.nextBlock.shape[i].indices {
+                if game.nextBlock.shape[i][j] > 0 {
+                    nextBlockView.tile[i][j].backgroundColor = GameConfig().BlockColor[game.nextBlock.shape[i][j]]
+                }
+            }
+        }
+    }
+    
+    // Game Model에서 값 가져와 View 업데이트
+    private func updateUI() {
+        self.levelLabel.text = String(self.game.level)
+        self.scoreLabel.text = String(self.game.score)
+        updateGameBoardView()
+        updateNextBlockView()
+    }
 }
