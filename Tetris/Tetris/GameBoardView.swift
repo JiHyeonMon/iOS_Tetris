@@ -12,8 +12,6 @@ import UIKit
  */
 class GameBoardView: UIView {
     
-    // GameBoardView 구성할 한 칸 한 칸 하나. ImageView로 생성
-    var cell: UIImageView!
     // 테트리스 게임 보드판을 UIImageView를 사이즈에 맞게 이중 배열로 만들 것
     var board: [[UIImageView]]!
     
@@ -36,10 +34,8 @@ class GameBoardView: UIView {
     // 보드판을 구성할 cell imageview를 만들고 보드의 이중 배열에 맞게 크기 지정 후 넣어준다.
     private func initLayout() {
         
-        // UIImageView 하나 만들어 cell에 넣어준다
-        self.cell = UIImageView()
         // GameConfig에 정의된 게임보드 판에 맞게 이중 Array 만들어둔다.
-        self.board = Array(repeating: Array(repeating: cell, count: GameConfig().BoardSizeX), count: GameConfig().BoardSizeY)
+        self.board = Array(repeating: Array(repeating: UIImageView(), count: GameConfig().BoardSizeX), count: GameConfig().BoardSizeY)
         
         // 보드판을 구성할 ImageView 하나의 사이즈 (정사각형으로 그릴 것)
         let cellSize = GameConfig().GameBoardCellSize

@@ -44,10 +44,16 @@ class ViewController: UIViewController {
         // 게임 초기화.
         // 게임에 필요한 객체 생성 및 보드판, 첫 테트로미노 생성
         game.gameStart()
-        // 화면에 그릴 Board와 다음 테트로미노를 보여줄 View를 현재 View에 추가하여 그릴 수 있게 한다.
+        
+        // initCustomView
+        // 화면에 그릴 GameBoardView와 다음 테트로미노를 보여줄 NextBlockView를 현재 View에 추가
         initGameBoardView()
         initNextBlockView()
+        
+        // 초기 게임 보드 값 화면에 그린다.
+        refreshAllGameBoard()
 
+        // Label 값과 NextBlock 그린다.
         updateUI()
         
         // 게임 진행을 시작한다.
@@ -59,35 +65,41 @@ class ViewController: UIViewController {
      */
     // Block Rotate를 위한 game 객체 rotate 메서드 호출
     @IBAction func clickRotate(_ sender: UIButton) {
-        if let dirtyRect = game.rotate(){
+        // getDirtyRectIsRotate - 회전했다면 dirtyRect을 반환한다.
+        // 회전이 가능해서 회전했다면 바뀐 값 dirtyRect 범위 값을 받아서 refreshDirtyRectGameBoard를 통해 화면에 다시 그려준다.
+        if let dirtyRect = game.getDirtyRectIsRotate(){
+            // dirtyRect만큼 화면 refresh
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
     }
     
     @IBAction func clickRight(_ sender: UIButton) {
+        // getDirtyRectIsMovable - 움직였다면 dirtyRect을 반환한다.
+        // 움직일 수 있어서 움직였다면 바뀐 값 dirtyRect 범위 값을 받아서 refreshDirtyRectGameBoard를 통해 화면에 다시 그려준다.
         if let dirtyRect = game.getDirtyRectIsMovable(direction: .right){
+            // dirtyRect만큼 화면 refresh
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
     }
     
     @IBAction func clickLeft(_ sender: UIButton) {
-//        game.checkMove(direction: MoveDirection.left)
-//        refreshAllGameBoard()
-        
+        // getDirtyRectIsMovable - 움직였다면 dirtyRect을 반환한다.
+        // 움직일 수 있어서 움직였다면 바뀐 값 dirtyRect 범위 값을 받아서 refreshDirtyRectGameBoard를 통해 화면에 다시 그려준다.
         if let dirtyRect = game.getDirtyRectIsMovable(direction: .left){
+            // dirtyRect만큼 화면 refresh
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
     }
 
     @IBAction func clickHardDown(_ sender: UIButton) {
-//        game.checkMove(direction: MoveDirection.hardDown)
-//        refreshAllGameBoard()
-        
+        // getDirtyRectIsMovable - 움직였다면 dirtyRect을 반환한다.
+        // 움직일 수 있어서 움직였다면 바뀐 값 dirtyRect 범위 값을 받아서 refreshDirtyRectGameBoard를 통해 화면에 다시 그려준다.
         if let dirtyRect = game.getDirtyRectIsMovable(direction: .hardDown){
-//            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
-            refreshAllGameBoard()
-
+            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
+        
+        // 하드 드랍시 NextBlock이 바뀌기 때문에 즉각적인 UI update가 필요하다ㅣ
+        updateUI()
         
     }
 
@@ -102,14 +114,19 @@ class ViewController: UIViewController {
             self.progress()
         }
         
+        // 현재 메인루프에 timer add해서 타이머 실행시켜준다.
         runLoop.add(timer, forMode: .common)
     }
     
     // 게임 실행
     // game 객체 값을 확인하고 View 업데이트
     private func progress() {
+        
         // Action
+        // getDirtyRectIsMovable - 움직였다면 dirtyRect을 반환한다.
+        // 움직일 수 있어서 움직였다면 바뀐 값 dirtyRect 범위 값을 받아서 refreshDirtyRectGameBoard를 통해 화면에 다시 그려준다.
         if let dirtyRect = game.getDirtyRectIsMovable(direction: .autoDown) {
+            // dirtyRect만큼 화면 refresh
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
         
@@ -125,18 +142,22 @@ class ViewController: UIViewController {
     /**********************************
      Methoed associated view update
      */
-    // 테트리스 게임판을 그릴 GameBoardView의 크기 및 위치 지정 후 실제 현재 화면에 add한다.
+    // GameBoardView 초기화 및 설정
     private func initGameBoardView() {
+        // 테트리스 게임판을 그릴 GameBoardView의 크기 및 위치 지정
         gameboardView = GameBoardView(frame: CGRect(x: 0, y: GameConfig().GameBoardTopMargin, width: Int(UIScreen.main.bounds.width), height: GameConfig().GameBoardCellSize*GameConfig().BoardSizeY+GameConfig().BoardSizeY))
         
+        // 현재 view에 add한다.
         view.addSubview(gameboardView)
     }
     
-    // 다음 블럭을 보여줄 view를 그릴 NextBlockView의 크기 및 위치 지정 후 실제 현재 화면에 add한다.
+    // NextBlockView 초기화 및 설정
     private func initNextBlockView() {
+        // 다음 블럭을 보여줄 view를 그릴 NextBlockView의 크기 및 위치 지정
         nextBlockView = NextBlockView(frame: CGRect(x: GameConfig().NextBlockMargin,
                                                     y: GameConfig().GameBoardCellSize*GameConfig().BoardSizeY+GameConfig().BoardSizeY + GameConfig().GameBoardTopMargin + GameConfig().NextBlockMargin,
                                                     width: GameConfig().NextBlockCellSize*GameConfig().NextBlockSize+GameConfig().NextBlockSize, height: GameConfig().NextBlockCellSize*GameConfig().NextBlockSize+GameConfig().NextBlockSize))
+        // 현재 view에 add한다.
         view.addSubview(nextBlockView)
     }
     
@@ -146,23 +167,19 @@ class ViewController: UIViewController {
         // gameBoard 전체를 반복문을 통해 순회한다.
         for i in game.board.gameBoard.indices {
             for j in game.board.gameBoard[i].indices {
-                
-                // 0이면 회색, 숫자가 있다면 해당 테트로미노에 맞는 색상을 지정해서 그려준다.
-                if game.board.gameBoard[i][j] == 0 {
-                    // 기본 보드판 색
-                    gameboardView.board[i][j].backgroundColor = UIColor.lightGray
-                } else {
-                    // 해당 숫자에 맞는 테트로미노 색상 설정
-                    gameboardView.board[i][j].backgroundColor = GameConfig().BlockColor[game.board.gameBoard[i][j]]
-                }
+                // 해당 숫자에 맞는 테트로미노 색상 설정
+                gameboardView.board[i][j].backgroundColor = GameConfig().BlockColor[game.board.gameBoard[i][j]]
             }
         }
-        
     }
     
-    func refreshDirtyRectGameBoard(dirtyRect: (startX: Int, startY: Int, endX: Int, endY: Int)) {
+    // 블럭이 이동함에 따라 수정된 부분만 화면 update
+    private func refreshDirtyRectGameBoard(dirtyRect: (startX: Int, startY: Int, endX: Int, endY: Int)) {
+        // 수정된 Rect의 좌측상단 xy, 우측하단 xy를 받아 보드판 범위에 맞게 반복문을 통해 돌며 화면 refresh
         for dy in dirtyRect.startY...dirtyRect.endY {
             for dx in dirtyRect.startX...dirtyRect.endX {
+                
+                // 게임 보드판의 범위에 넘지않는 부분 확인한다.
                 if dy <= GameConfig().BoardSizeY-1 && dx <= GameConfig().BoardSizeX-1 && 0 <= dx {
                     gameboardView.board[dy][dx].backgroundColor = GameConfig().BlockColor[game.board.gameBoard[dy][dx]]
                 }
@@ -175,6 +192,7 @@ class ViewController: UIViewController {
     private func updateNextBlockView() {
         // 현재 화면에 그려진 NextBlock 지운다.
         removeNextBlock()
+        
         // 새로운 NextBlock을 화면에 그려준다.
         drawNextBlock()
     }
@@ -184,6 +202,7 @@ class ViewController: UIViewController {
         // 전체 4*4 사이즈에 맞게 돌면서 모두 default lightGray 색으로 설정한다.
         for i in 0..<GameConfig().NextBlockSize {
             for j in 0..<GameConfig().NextBlockSize {
+                // 블럭판 회색으로 칠한다.
                 nextBlockView.tile[i][j].backgroundColor = UIColor.lightGray
 
             }
@@ -193,20 +212,20 @@ class ViewController: UIViewController {
     // 새로운 다음 블럭을 그려준다.
     // Game Model의 NewBlock을 실제 화면에 그린다.
     func drawNextBlock() {
+        // NextBlockView 4*4 전체 순회를 통해 확인하고 그린다.
         for i in game.nextBlock.shape.indices {
             for j in game.nextBlock.shape[i].indices {
-                if game.nextBlock.shape[i][j] > 0 {
-                    nextBlockView.tile[i][j].backgroundColor = GameConfig().BlockColor[game.nextBlock.shape[i][j]]
-                }
+                // 해당 칸에 맞는 색상을 그려준다.
+                nextBlockView.tile[i][j].backgroundColor = GameConfig().BlockColor[game.nextBlock.shape[i][j]]
             }
         }
     }
     
     // Game Model에서 값 가져와 View 업데이트
     private func updateUI() {
+        // 현재 레벨과 점수 업데이트 
         self.levelLabel.text = String(self.game.level)
         self.scoreLabel.text = String(self.game.score)
-//        refreshAllGameBoard()
         updateNextBlockView()
     }
 }
