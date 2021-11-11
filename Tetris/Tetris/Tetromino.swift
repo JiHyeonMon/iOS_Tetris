@@ -16,7 +16,8 @@ enum TetrominoDefinition: CaseIterable{
     // 테트로미노 블럭의 총 케이스 7가지
     case I, O, T, J, L, S, Z
     
-    // 각 케이스에 따른 shape정의 
+    // 각 케이스에 따른 shape정의
+    // GameConfig에 각 index에 맞는 색상 정의 - [UIColor.lightGray, UIColor.cyan, UIColor.yellow, UIColor.purple, UIColor.blue, UIColor.orange, UIColor.green, UIColor.red]
     var shape: [[Int]] {
         switch self {
         case .I:

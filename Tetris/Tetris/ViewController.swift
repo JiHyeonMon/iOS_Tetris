@@ -38,18 +38,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // initCustomView
+        // 화면에 그릴 GameBoardView와 다음 테트로미노를 보여줄 NextBlockView를 현재 View에 추가
+        initCustomView()
+        
         // init 작업 - 실제 게임 데이터를 가진 Game 객체 생성
         game = Game()
         
         // 게임 초기화.
         // 게임에 필요한 객체 생성 및 보드판, 첫 테트로미노 생성
         game.gameStart()
-        
-        // initCustomView
-        // 화면에 그릴 GameBoardView와 다음 테트로미노를 보여줄 NextBlockView를 현재 View에 추가
-        initGameBoardView()
-        initNextBlockView()
-        
         // 초기 게임 보드 값 화면에 그린다.
         refreshAllGameBoard()
 
@@ -76,7 +74,7 @@ class ViewController: UIViewController {
     @IBAction func clickRight(_ sender: UIButton) {
         // getDirtyRectIsMovable - 움직였다면 dirtyRect을 반환한다.
         // 움직일 수 있어서 움직였다면 바뀐 값 dirtyRect 범위 값을 받아서 refreshDirtyRectGameBoard를 통해 화면에 다시 그려준다.
-        if let dirtyRect = game.getDirtyRectIsMovable(direction: .right){
+        if let dirtyRect = game.getDirtyRectIsMoved(direction: .right){
             // dirtyRect만큼 화면 refresh
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
@@ -85,7 +83,7 @@ class ViewController: UIViewController {
     @IBAction func clickLeft(_ sender: UIButton) {
         // getDirtyRectIsMovable - 움직였다면 dirtyRect을 반환한다.
         // 움직일 수 있어서 움직였다면 바뀐 값 dirtyRect 범위 값을 받아서 refreshDirtyRectGameBoard를 통해 화면에 다시 그려준다.
-        if let dirtyRect = game.getDirtyRectIsMovable(direction: .left){
+        if let dirtyRect = game.getDirtyRectIsMoved(direction: .left){
             // dirtyRect만큼 화면 refresh
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
@@ -94,7 +92,7 @@ class ViewController: UIViewController {
     @IBAction func clickHardDown(_ sender: UIButton) {
         // getDirtyRectIsMovable - 움직였다면 dirtyRect을 반환한다.
         // 움직일 수 있어서 움직였다면 바뀐 값 dirtyRect 범위 값을 받아서 refreshDirtyRectGameBoard를 통해 화면에 다시 그려준다.
-        if let dirtyRect = game.getDirtyRectIsMovable(direction: .hardDown){
+        if let dirtyRect = game.getDirtyRectIsMoved(direction: .hardDown){
             refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
         }
         
@@ -122,43 +120,45 @@ class ViewController: UIViewController {
     // game 객체 값을 확인하고 View 업데이트
     private func progress() {
         
+       
         // Action
         // getDirtyRectIsMovable - 움직였다면 dirtyRect을 반환한다.
         // 움직일 수 있어서 움직였다면 바뀐 값 dirtyRect 범위 값을 받아서 refreshDirtyRectGameBoard를 통해 화면에 다시 그려준다.
-        if let dirtyRect = game.getDirtyRectIsMovable(direction: .autoDown) {
-            // dirtyRect만큼 화면 refresh
-            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
-        }
         
-        // UI Update
-        updateUI()
+        if let dirtyRect = game.getDirtyRectIsMoved(direction: .autoDown) {
+            refreshDirtyRectGameBoard(dirtyRect: dirtyRect)
+        } else {
+            // autoDown에서 nil이라는건 한 블럭이 다 떨어지고 clear line, check score 하는 시점
+            // 화면 전체 업데이트, Next Block, 레벨, 점수 업데이트 한다.
+            refreshAllGameBoard()
+            updateUI()
+        }
         
         // check
         if game.gameState == .gameover {
             timer.invalidate()
         }
+        
+        
+
     }
     
     /**********************************
-     Methoed associated view update
+     Methoed associated View
      */
     // GameBoardView 초기화 및 설정
-    private func initGameBoardView() {
+    private func initCustomView() {
         // 테트리스 게임판을 그릴 GameBoardView의 크기 및 위치 지정
         gameboardView = GameBoardView(frame: CGRect(x: 0, y: GameConfig().GameBoardTopMargin, width: Int(UIScreen.main.bounds.width), height: GameConfig().GameBoardCellSize*GameConfig().BoardSizeY+GameConfig().BoardSizeY))
         
-        // 현재 view에 add한다.
-        view.addSubview(gameboardView)
-    }
-    
-    // NextBlockView 초기화 및 설정
-    private func initNextBlockView() {
         // 다음 블럭을 보여줄 view를 그릴 NextBlockView의 크기 및 위치 지정
         nextBlockView = NextBlockView(frame: CGRect(x: GameConfig().NextBlockMargin,
                                                     y: GameConfig().GameBoardCellSize*GameConfig().BoardSizeY+GameConfig().BoardSizeY + GameConfig().GameBoardTopMargin + GameConfig().NextBlockMargin,
                                                     width: GameConfig().NextBlockCellSize*GameConfig().NextBlockSize+GameConfig().NextBlockSize, height: GameConfig().NextBlockCellSize*GameConfig().NextBlockSize+GameConfig().NextBlockSize))
         // 현재 view에 add한다.
+        view.addSubview(gameboardView)
         view.addSubview(nextBlockView)
+
     }
     
     // Game의 보드판이 바뀜에 따라 실제 View도 없데이트 한다.
