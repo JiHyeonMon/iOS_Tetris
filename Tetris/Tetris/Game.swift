@@ -57,7 +57,7 @@ class Game {
     
     // Controller로부터 move 요청이 왔을 때, 실제 block 움직일 코드
     // enum으로 정의해둔 Direction 타입을 인자로 받는다. --> up, autoDown, hardDown, left, right
-    func getDirtyRectIsMovable(direction: MoveDirection) -> (Int, Int, Int, Int)? {
+    func getDirtyRectIsMoved(direction: MoveDirection) -> (Int, Int, Int, Int)? {
         
         // 각각의 direction마다 switch 문으로 실행
         switch direction {
@@ -75,9 +75,9 @@ class Game {
                 return dirtyRect
             }
             
-            // down 할 수 없다는 건 이미 다 내려왔고 line check 및 새 블럭이 추가된다.
-            // 전체 화면 refresh위해 전체 rect 반환
-            return (0, 0, GameConfig().BoardSizeX-1, GameConfig().BoardSizeY-1)
+            // down 할 수 없다
+            // autoDown에서 nil을 반환하면 ViewController에서 allRefresh 진행
+            return nil
 
             
             

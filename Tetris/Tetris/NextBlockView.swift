@@ -13,7 +13,6 @@ import UIKit
 class NextBlockView: UIView {
     
     // NextBlockView를 구성할 한 칸 한 칸 하나. ImageView로 생성
-    var cell: UIImageView!
     var tile: [[UIImageView]]!
     
     // GameConfig에서 미리 정의해둔 크기의 View를 그리기 위해 사이즈 지정
@@ -22,6 +21,7 @@ class NextBlockView: UIView {
     /*******************************
      Initialization
      **/
+    // init(frame:) : default initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.initLayout()
@@ -36,12 +36,9 @@ class NextBlockView: UIView {
     // View 초기화
     // NextBlockView을 구성할 cell imageview를 만들고 이중 배열에 맞게 크기 지정 후 넣어준다.
     private func initLayout() {
-        // 데이터 선언
-        // UIImageView 하나 만들어 cell에 넣어준다
-        self.cell = UIImageView()
+
         // GameConfig에 정의된 사이즈에 맞게 이중 Array 만들어둔다.
-        self.tile = Array(repeating: Array(repeating: cell, count: nextBlockViewSize), count: nextBlockViewSize)
-        
+        self.tile = Array(repeating: Array(repeating: UIImageView(), count: nextBlockViewSize), count: nextBlockViewSize)
         
         // NextBlock을 보여줄 뷰를 구성할 ImageView 하나의 사이즈 (정사각형으로 그릴 것)
         let cellSize = GameConfig().NextBlockCellSize
